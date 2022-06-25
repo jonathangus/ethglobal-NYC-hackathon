@@ -12,6 +12,17 @@ function MyApp({ Component, pageProps }: AppProps) {
         <MulticallProvider>
           <Component {...pageProps} />
           <NotificationHandler />
+
+          <style global jsx>{`
+            html,
+            body,
+            body > div:first-child,
+            div#__next,
+            div#__next > div {
+              height: 100%;
+              margin: 0px;
+            }
+          `}</style>
         </MulticallProvider>
       </Web3Provider>
     </NotificationsProvider>

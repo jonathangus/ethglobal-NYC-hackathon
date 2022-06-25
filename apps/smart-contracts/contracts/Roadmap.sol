@@ -94,12 +94,9 @@ contract Roadmap is Ownable {
             console.log('return 2');
             return 0;
         }
-        console.log('steps length', steps.length);
 
-        console.log('completed length', completed);
         uint256 completedPercentage = (steps.length * 1000) / completed;
 
-        console.log('completedPercentage', completedPercentage);
         uint256 eachShare = (available / nft.totalSupply());
 
         for (uint256 i = 0; i < tokenIds.length; i++) {

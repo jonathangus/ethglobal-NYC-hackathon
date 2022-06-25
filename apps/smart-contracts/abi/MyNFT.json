@@ -404,43 +404,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "identifier",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_ancillaryData",
-        "type": "bytes"
-      },
-      {
-        "internalType": "int256",
-        "name": "price",
-        "type": "int256"
-      }
-    ],
-    "name": "priceSettled",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "renounceOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "requestGovernanceCheck",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

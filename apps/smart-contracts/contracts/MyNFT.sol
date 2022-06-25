@@ -44,13 +44,13 @@ contract MyNFT is ERC721, ERC721Enumerable, Ownable, Roadmap {
         addStep('apeIsSent()', 'BAYC sent to user');
         addStep('charityIsSent()', 'Charity sent');
 
-        address oracle = oracleAddress();
-        IERC20(DAI).approve(oracle, 200e18);
+        // address oracle = oracleAddress();
+        // IERC20(DAI).approve(oracle, 200e18);
         creationTimestamp = block.timestamp;
     }
 
     function mintProgress() public view returns (bool) {
-        return MAX_SUPPLY / 2 > totalSupply();
+        return MAX_SUPPLY / 2 < totalSupply();
     }
 
     function charityIsSent() public view returns (bool) {
@@ -70,79 +70,79 @@ contract MyNFT is ERC721, ERC721Enumerable, Ownable, Roadmap {
         apeSent = true;
     }
 
-    function oracleAddress() private view returns (address) {
-        address finderAddress = 0xeD0169a88d267063184b0853BaAAAe66c3c154B2;
-        FinderInterface finder = FinderInterface(finderAddress);
+    // function oracleAddress() private view returns (address) {
+    //     address finderAddress = 0xeD0169a88d267063184b0853BaAAAe66c3c154B2;
+    //     FinderInterface finder = FinderInterface(finderAddress);
 
-        return finder.getImplementationAddress('OptimisticOracle');
-    }
+    //     return finder.getImplementationAddress('OptimisticOracle');
+    // }
 
-    function getOptimisticOracle()
-        internal
-        view
-        returns (OptimisticOracleInterface)
-    {
-        return OptimisticOracleInterface(oracleAddress());
-    }
+    // function getOptimisticOracle()
+    //     internal
+    //     view
+    //     returns (OptimisticOracleInterface)
+    // {
+    //     return OptimisticOracleInterface(oracleAddress());
+    // }
 
-    function requestGovernanceCheck() public {
-        OptimisticOracleInterface optimisticOracle = getOptimisticOracle();
-        //rinkeby address USDC_ADDRESS = 0xeb8f08a975Ab53E34D8a0330E0D34de942C95926;
-        address DAI_KOVAN = 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99;
+    // function requestGovernanceCheck() public {
+    //     OptimisticOracleInterface optimisticOracle = getOptimisticOracle();
+    //     //rinkeby address USDC_ADDRESS = 0xeb8f08a975Ab53E34D8a0330E0D34de942C95926;
+    //     address DAI_KOVAN = 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99;
 
-        optimisticOracle.requestPrice(
-            priceIdentifier,
-            creationTimestamp,
-            ancillaryData,
-            IERC20(DAI_KOVAN),
-            2e18
-        );
+    //     optimisticOracle.requestPrice(
+    //         priceIdentifier,
+    //         creationTimestamp,
+    //         ancillaryData,
+    //         IERC20(DAI_KOVAN),
+    //         2e18
+    //     );
 
-        optimisticOracle.setCustomLiveness(
-            priceIdentifier,
-            creationTimestamp,
-            ancillaryData,
-            60 * 3
-        );
+    //     optimisticOracle.setCustomLiveness(
+    //         priceIdentifier,
+    //         creationTimestamp,
+    //         ancillaryData,
+    //         60 * 3
+    //     );
 
-        // Make the request an event-based request.
-        // optimisticOracle.setEventBased(priceIdentifier, 123, ancillaryData);
+    //     // Make the request an event-based request.
+    //     // optimisticOracle.setEventBased(priceIdentifier, 123, ancillaryData);
 
-        // Enable the priceDisputed and priceSettled callback
-        // optimisticOracle.setCallbacks(
-        //     priceIdentifier,
-        //     123,
-        //     ancillaryData,
-        //     false,
-        //     true,
-        //     true
-        // );
-    }
+    //     // Enable the priceDisputed and priceSettled callback
+    //     // optimisticOracle.setCallbacks(
+    //     //     priceIdentifier,
+    //     //     123,
+    //     //     ancillaryData,
+    //     //     false,
+    //     //     true,
+    //     //     true
+    //     // );
+    // }
 
-    function priceSettled(
-        bytes32 identifier,
-        uint256 timestamp,
-        bytes memory _ancillaryData,
-        int256 price
-    ) external {
-        OptimisticOracleInterface optimisticOracle = getOptimisticOracle();
-        require(msg.sender == address(optimisticOracle), 'not authorized');
-        require(timestamp == creationTimestamp, 'different timestamps');
-        require(identifier == priceIdentifier, 'same identifier');
-        require(
-            keccak256(ancillaryData) == keccak256(_ancillaryData),
-            'same ancillary data'
-        );
+    // function priceSettled(
+    //     bytes32 identifier,
+    //     uint256 timestamp,
+    //     bytes memory _ancillaryData,
+    //     int256 price
+    // ) external {
+    //     OptimisticOracleInterface optimisticOracle = getOptimisticOracle();
+    //     require(msg.sender == address(optimisticOracle), 'not authorized');
+    //     require(timestamp == creationTimestamp, 'different timestamps');
+    //     require(identifier == priceIdentifier, 'same identifier');
+    //     require(
+    //         keccak256(ancillaryData) == keccak256(_ancillaryData),
+    //         'same ancillary data'
+    //     );
 
-        // Calculate the value of settlementPrice using either 0, 0.5e18, or 1e18 as the expiryPrice.
-        if (price == 1e18) {
-            // true
-            governanceApproved = true;
-        } else {
-            callbackError = true;
-            // false
-        }
-    }
+    //     // Calculate the value of settlementPrice using either 0, 0.5e18, or 1e18 as the expiryPrice.
+    //     if (price == 1e18) {
+    //         // true
+    //         governanceApproved = true;
+    //     } else {
+    //         callbackError = true;
+    //         // false
+    //     }
+    // }
 
     function sendToCharity() public onlyOwner {
         address CHARITY_ADDRESS = 0x9AA48Bb538206d5D7329aafd17B63562e7c98457;

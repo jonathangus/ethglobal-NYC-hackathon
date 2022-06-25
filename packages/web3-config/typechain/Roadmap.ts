@@ -27,6 +27,7 @@ export interface RoadmapInterface extends utils.Interface {
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "reverted()": FunctionFragment;
+    "stepCount()": FunctionFragment;
     "steps(uint256)": FunctionFragment;
     "stepsCompleted()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
@@ -52,6 +53,7 @@ export interface RoadmapInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "reverted", values?: undefined): string;
+  encodeFunctionData(functionFragment: "stepCount", values?: undefined): string;
   encodeFunctionData(functionFragment: "steps", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "stepsCompleted",
@@ -85,6 +87,7 @@ export interface RoadmapInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "reverted", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "stepCount", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "steps", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "stepsCompleted",
@@ -211,6 +214,10 @@ export interface Roadmap extends BaseContract {
 
     "reverted()"(overrides?: CallOverrides): Promise<[boolean]>;
 
+    stepCount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "stepCount()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     steps(
       arg0: BigNumberish,
       overrides?: CallOverrides
@@ -314,6 +321,10 @@ export interface Roadmap extends BaseContract {
 
   "reverted()"(overrides?: CallOverrides): Promise<boolean>;
 
+  stepCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "stepCount()"(overrides?: CallOverrides): Promise<BigNumber>;
+
   steps(
     arg0: BigNumberish,
     overrides?: CallOverrides
@@ -401,6 +412,10 @@ export interface Roadmap extends BaseContract {
     reverted(overrides?: CallOverrides): Promise<boolean>;
 
     "reverted()"(overrides?: CallOverrides): Promise<boolean>;
+
+    stepCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "stepCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     steps(
       arg0: BigNumberish,
@@ -518,6 +533,10 @@ export interface Roadmap extends BaseContract {
 
     "reverted()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    stepCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "stepCount()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     steps(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
     "steps(uint256)"(
@@ -602,6 +621,10 @@ export interface Roadmap extends BaseContract {
     reverted(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "reverted()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    stepCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "stepCount()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     steps(
       arg0: BigNumberish,

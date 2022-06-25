@@ -9,8 +9,7 @@ import useContractWrite from '../../hooks/useWriteContract';
 import useAddress from '../../hooks/useAddress';
 import { useEffect, useState } from 'react';
 import { MyNFT__factory } from 'web3-config';
-
-const steps = [{ completed: true, id: 1, message: 'Jattebra NYC' }];
+import Roadmap from '../../components/Roadmap';
 
 const AddressExpanded = () => {
   const router = useRouter();
@@ -107,11 +106,7 @@ const AddressExpanded = () => {
           </Container>
         </Card.Header>
         <Card.Body>
-          {steps.map((s) => (
-            <Row key={s.id}>
-              <Text>{s.message}</Text>
-            </Row>
-          ))}
+          <Roadmap></Roadmap>
         </Card.Body>
         <Card.Footer>
           <Row justify="space-between">

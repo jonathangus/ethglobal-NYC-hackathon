@@ -44,7 +44,7 @@ const Page = () => {
           />
         </Row>
         <Row>
-          <Button css={{ margin: '8px auto' }} onClick={handleAddressLookup}>
+          <Button css={{ margin: '8px auto', backgroundColor:'$primary' }} onClick={handleAddressLookup}>
             Look up
           </Button>
         </Row>

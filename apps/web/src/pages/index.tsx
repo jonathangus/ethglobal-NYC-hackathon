@@ -8,6 +8,10 @@ const Page = () => {
     'mintedComplete'
   );
 
+  const { data: steps } = useReadContract(MyNFT__factory, 'steps', {
+    params: ['0'],
+  });
+
   return (
     <div style={{ display: 'grid', gap: 20 }}>
       <ConnectButton />

@@ -36,7 +36,6 @@ export function useReadContract<
 
   const notice = useNotice();
 
-  console.log(predefinedAddress);
   const value = useMulticallState(
     {
       method: method as string,

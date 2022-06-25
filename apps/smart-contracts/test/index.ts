@@ -2,10 +2,10 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
-import { Counter } from 'web3-config';
+import { Roadmap } from 'web3-config';
 
-describe('Counter', function () {
-  let counter: Counter;
+describe('Roadmap', function () {
+  let roadmap: Roadmap;
 
   let owner: SignerWithAddress;
   let addr1: SignerWithAddress;
@@ -15,9 +15,9 @@ describe('Counter', function () {
   beforeEach(async () => {
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
 
-    const CounterContract = await ethers.getContractFactory('Counter');
-    counter = (await CounterContract.deploy()) as Counter;
-    await counter.deployed();
+    const RoadmapContract = await ethers.getContractFactory('Roadmap');
+    roadmap = (await RoadmapContract.deploy()) as Roadmap;
+    await roadmap.deployed();
   });
 
   describe('deployment', async () => {

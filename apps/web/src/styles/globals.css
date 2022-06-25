@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .task {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  margin-top: 1.5rem;
+  transition: all 2s linear;
+}
+.task .title {
+  font-size: 1rem;
+  font-weight: bold;
+}
+.task .description {
+  font-size: 0.8rem;
+  color: #555;
+}
+.task .connector {
+  position: absolute;
+  top: 0;
+  height: 5rem;
+  z-index: -10;
+  border-left: 1px dashed gray;
+}
+.task .connector.done {
+  border-left: 1px solid #4fc9da;
+}
+.task .step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 0.8rem;
+  border-radius: 5px;
+  background-color: #ddf8fc;
+  color: #4fc9da;
+}
+.task .active {
+  background-color: #4fc9da;
+  color: #fff;
+}
+.task .task-info {
+  opacity: 0.6;
+}
+.task .acitve-task-info {
+  opacity: 1;
+} */

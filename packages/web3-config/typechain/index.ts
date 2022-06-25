@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { Ownable } from "./Ownable";
+export type { IERC20 } from "./IERC20";
 export type { ERC721 } from "./ERC721";
 export type { ERC721Enumerable } from "./ERC721Enumerable";
 export type { IERC721Enumerable } from "./IERC721Enumerable";
@@ -10,11 +11,15 @@ export type { IERC721 } from "./IERC721";
 export type { IERC721Receiver } from "./IERC721Receiver";
 export type { ERC165 } from "./ERC165";
 export type { IERC165 } from "./IERC165";
+export type { FinderInterface } from "./FinderInterface";
+export type { OptimisticOracleInterface } from "./OptimisticOracleInterface";
+export type { OptimisticOracleV2Interface } from "./OptimisticOracleV2Interface";
 export type { Multicall2 } from "./Multicall2";
 export type { MyNFT } from "./MyNFT";
 export type { Roadmap } from "./Roadmap";
 
 export { Ownable__factory } from "./factories/Ownable__factory";
+export { IERC20__factory } from "./factories/IERC20__factory";
 export { ERC721__factory } from "./factories/ERC721__factory";
 export { ERC721Enumerable__factory } from "./factories/ERC721Enumerable__factory";
 export { IERC721Enumerable__factory } from "./factories/IERC721Enumerable__factory";
@@ -23,6 +28,9 @@ export { IERC721__factory } from "./factories/IERC721__factory";
 export { IERC721Receiver__factory } from "./factories/IERC721Receiver__factory";
 export { ERC165__factory } from "./factories/ERC165__factory";
 export { IERC165__factory } from "./factories/IERC165__factory";
+export { FinderInterface__factory } from "./factories/FinderInterface__factory";
+export { OptimisticOracleInterface__factory } from "./factories/OptimisticOracleInterface__factory";
+export { OptimisticOracleV2Interface__factory } from "./factories/OptimisticOracleV2Interface__factory";
 export { Multicall2__factory } from "./factories/Multicall2__factory";
 export { MyNFT__factory } from "./factories/MyNFT__factory";
 export { Roadmap__factory } from "./factories/Roadmap__factory";

@@ -57,6 +57,10 @@ describe('Roadmap', function () {
         claimableAmount.toString()
       );
 
+      expect(ethers.utils.parseEther('0.025').toString()).to.eq(
+        claimableAmount.toString()
+      );
+
       await nftContract.abort();
       await nftContract.setApprovalForAll(nftContract.address, true);
       await nftContract.claimRefund([1]);

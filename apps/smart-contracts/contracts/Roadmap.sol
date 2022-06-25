@@ -61,6 +61,10 @@ contract Roadmap is Ownable {
         emit StepExecuted(stepId);
     }
 
+    function stepCount() public view returns (uint256) {
+        return steps.length;
+    }
+
     function stepsCompleted() public view returns (uint256 completed) {
         for (uint256 i = 0; i < steps.length; i++) {
             Step memory step = steps[i];
@@ -81,16 +85,26 @@ contract Roadmap is Ownable {
         uint256 totalMinted = nft.totalSupply() * mintPrice;
 
         if (totalMinted < reservedAmount) {
+            console.log('return 1');
             return 0;
         }
         uint256 available = totalMinted - reservedAmount;
         uint256 balance = address(this).balance;
-        require(balance > available, 'Not enough balance to withdraw');
+        if (balance < available) {
+            console.log('return 2');
+            return 0;
+        }
+        console.log('steps length', steps.length);
+
+        console.log('completed length', completed);
+        uint256 completedPercentage = (steps.length * 1000) / completed;
+
+        console.log('completedPercentage', completedPercentage);
         uint256 eachShare = (available / nft.totalSupply());
 
         for (uint256 i = 0; i < tokenIds.length; i++) {
             if (!claimed[i]) {
-                refund += eachShare;
+                refund += (eachShare * completedPercentage) / 1000;
             }
         }
 

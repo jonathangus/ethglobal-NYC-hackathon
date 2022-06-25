@@ -1,0 +1,32 @@
+{
+    "name": "Nubbe Owners",
+    "skin": "indexed",
+    "about": "",
+    "admins": [
+        "0xA4B7CEe8409673624EC9B075f5A4f9b8EbAdEd49"
+    ],
+    "avatar": "https://pbs.twimg.com/profile_images/1431587138202701826/lpgblc4h_400x400.jpg",
+    "github": "lootproject",
+    "symbol": "MyNFT",
+    "filters": {
+        "minScore": 1,
+        "onlyMembers": false
+    },
+    "members": [],
+    "network": "1",
+    "plugins": {},
+    "twitter": "lootproject",
+    "strategies": [
+        {
+            "name": "erc721",
+            "params": {
+                "symbol": "MTK",
+                "address": "0x9AA48Bb538206d5D7329aafd17B63562e7c98457"
+            }
+        }
+    ],
+    "validation": {
+        "name": "basic",
+        "params": {}
+    }
+}

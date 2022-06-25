@@ -80,7 +80,7 @@ export interface RoadmapInterface extends utils.Interface {
 
   events: {
     "OwnershipTransferred(address,address)": EventFragment;
-    "StepCreated(uint8,bytes4,string)": EventFragment;
+    "StepCreated(bytes32,string)": EventFragment;
     "StepExecuted(uint256)": EventFragment;
   };
 
@@ -98,8 +98,8 @@ export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
 export type StepCreatedEvent = TypedEvent<
-  [number, string, string],
-  { stepType: number; data: string; message: string }
+  [string, string],
+  { data: string; message: string }
 >;
 
 export type StepCreatedEventFilter = TypedEventFilter<StepCreatedEvent>;
@@ -184,8 +184,7 @@ export interface Roadmap extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [number, string, string, boolean] & {
-        stepType: number;
+      [string, string, boolean] & {
         data: string;
         message: string;
         completed: boolean;
@@ -196,8 +195,7 @@ export interface Roadmap extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [number, string, string, boolean] & {
-        stepType: number;
+      [string, string, boolean] & {
         data: string;
         message: string;
         completed: boolean;
@@ -271,8 +269,7 @@ export interface Roadmap extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [number, string, string, boolean] & {
-      stepType: number;
+    [string, string, boolean] & {
       data: string;
       message: string;
       completed: boolean;
@@ -283,8 +280,7 @@ export interface Roadmap extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [number, string, string, boolean] & {
-      stepType: number;
+    [string, string, boolean] & {
       data: string;
       message: string;
       completed: boolean;
@@ -347,8 +343,7 @@ export interface Roadmap extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [number, string, string, boolean] & {
-        stepType: number;
+      [string, string, boolean] & {
         data: string;
         message: string;
         completed: boolean;
@@ -359,8 +354,7 @@ export interface Roadmap extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [number, string, string, boolean] & {
-        stepType: number;
+      [string, string, boolean] & {
         data: string;
         message: string;
         completed: boolean;
@@ -392,16 +386,11 @@ export interface Roadmap extends BaseContract {
       newOwner?: string | null
     ): OwnershipTransferredEventFilter;
 
-    "StepCreated(uint8,bytes4,string)"(
-      stepType?: null,
+    "StepCreated(bytes32,string)"(
       data?: null,
       message?: null
     ): StepCreatedEventFilter;
-    StepCreated(
-      stepType?: null,
-      data?: null,
-      message?: null
-    ): StepCreatedEventFilter;
+    StepCreated(data?: null, message?: null): StepCreatedEventFilter;
 
     "StepExecuted(uint256)"(stepId?: null): StepExecutedEventFilter;
     StepExecuted(stepId?: null): StepExecutedEventFilter;

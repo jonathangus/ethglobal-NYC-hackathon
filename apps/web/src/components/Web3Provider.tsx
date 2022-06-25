@@ -1,23 +1,19 @@
 import '@rainbow-me/rainbowkit/styles.css';
 
-import {
-  apiProvider,
-  configureChains,
-  darkTheme,
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { createClient, WagmiProvider } from 'wagmi';
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { infuraProvider } from 'wagmi/providers/infura';
+import { publicProvider } from 'wagmi/providers/public';
 
 import { config, wantedChains } from '../config/config';
 
 const { chains, provider } = configureChains(wantedChains, [
-  apiProvider.infura(config.INFURA_ID),
-  apiProvider.fallback(),
+  infuraProvider({ infuraId: config.INFURA_ID }),
+  publicProvider(),
 ]);
 
 const { connectors } = getDefaultWallets({
-  appName: 'Anotherblock',
+  appName: 'ETH NYC',
   chains,
 });
 
@@ -29,20 +25,20 @@ const wagmiClient = createClient({
 
 const Web3Provider = ({ children }) => {
   return (
-    <WagmiProvider client={wagmiClient}>
+    <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         chains={chains}
         appInfo={{
           appName: 'NYC Hackathon',
         }}
-        theme={darkTheme({
-          borderRadius: 'none',
-          accentColor: '#000bff',
-        })}
+        // theme={darkTheme({
+        //   borderRadius: 'none',
+        //   accentColor: '#000bff',
+        // })}
       >
         {children}
       </RainbowKitProvider>
-    </WagmiProvider>
+    </WagmiConfig>
   );
 };
 

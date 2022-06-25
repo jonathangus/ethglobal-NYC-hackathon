@@ -9,6 +9,7 @@ import {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -20,18 +21,20 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface MyNFTInterface extends utils.Interface {
   contractName: "MyNFT";
   functions: {
+    "MINT_PRICE()": FunctionFragment;
     "abort()": FunctionFragment;
     "apeIsSent()": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "claimAbort(uint256[])": FunctionFragment;
+    "charityIsSent()": FunctionFragment;
+    "claimRefund(uint256[])": FunctionFragment;
+    "claimableAmount(uint256[])": FunctionFragment;
     "executeStep(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
     "governanceIsApproved()": FunctionFragment;
-    "helpKoalas()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
-    "mint()": FunctionFragment;
-    "mintedComplete()": FunctionFragment;
+    "mint(address,uint256)": FunctionFragment;
+    "mintProgress()": FunctionFragment;
     "name()": FunctionFragment;
     "owner()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
@@ -39,9 +42,11 @@ export interface MyNFTInterface extends utils.Interface {
     "reverted()": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "sendApe(address)": FunctionFragment;
+    "sendToCharity()": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setGovernanceApproved()": FunctionFragment;
     "steps(uint256)": FunctionFragment;
+    "stepsCompleted()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
     "tokenByIndex(uint256)": FunctionFragment;
@@ -53,6 +58,10 @@ export interface MyNFTInterface extends utils.Interface {
     "withdrawFunds()": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "MINT_PRICE",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "abort", values?: undefined): string;
   encodeFunctionData(functionFragment: "apeIsSent", values?: undefined): string;
   encodeFunctionData(
@@ -61,7 +70,15 @@ export interface MyNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "claimAbort",
+    functionFragment: "charityIsSent",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimRefund",
+    values: [BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimableAmount",
     values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
@@ -77,16 +94,15 @@ export interface MyNFTInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "helpKoalas",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [string, string]
   ): string;
-  encodeFunctionData(functionFragment: "mint", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "mintedComplete",
+    functionFragment: "mint",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mintProgress",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
@@ -106,6 +122,10 @@ export interface MyNFTInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "sendApe", values: [string]): string;
   encodeFunctionData(
+    functionFragment: "sendToCharity",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "setApprovalForAll",
     values: [string, boolean]
   ): string;
@@ -114,6 +134,10 @@ export interface MyNFTInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "steps", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "stepsCompleted",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
@@ -148,11 +172,23 @@ export interface MyNFTInterface extends utils.Interface {
     values?: undefined
   ): string;
 
+  decodeFunctionResult(functionFragment: "MINT_PRICE", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "abort", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "apeIsSent", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "claimAbort", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "charityIsSent",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "claimRefund",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "claimableAmount",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "executeStep",
     data: BytesLike
@@ -165,14 +201,13 @@ export interface MyNFTInterface extends utils.Interface {
     functionFragment: "governanceIsApproved",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "helpKoalas", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "mintedComplete",
+    functionFragment: "mintProgress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
@@ -189,6 +224,10 @@ export interface MyNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "sendApe", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "sendToCharity",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setApprovalForAll",
     data: BytesLike
   ): Result;
@@ -197,6 +236,10 @@ export interface MyNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "steps", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "stepsCompleted",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -313,6 +356,10 @@ export interface MyNFT extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    MINT_PRICE(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "MINT_PRICE()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     abort(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -344,15 +391,29 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    claimAbort(
+    charityIsSent(overrides?: CallOverrides): Promise<[boolean]>;
+
+    "charityIsSent()"(overrides?: CallOverrides): Promise<[boolean]>;
+
+    claimRefund(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    "claimAbort(uint256[])"(
+    "claimRefund(uint256[])"(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    claimableAmount(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "claimableAmount(uint256[])"(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     executeStep(
       stepId: BigNumberish,
@@ -378,14 +439,6 @@ export interface MyNFT extends BaseContract {
 
     "governanceIsApproved()"(overrides?: CallOverrides): Promise<[boolean]>;
 
-    helpKoalas(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    "helpKoalas()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     isApprovedForAll(
       owner: string,
       operator: string,
@@ -399,16 +452,20 @@ export interface MyNFT extends BaseContract {
     ): Promise<[boolean]>;
 
     mint(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: string,
+      quantity: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    "mint()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    "mint(address,uint256)"(
+      to: string,
+      quantity: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    mintedComplete(overrides?: CallOverrides): Promise<[boolean]>;
+    mintProgress(overrides?: CallOverrides): Promise<[boolean]>;
 
-    "mintedComplete()"(overrides?: CallOverrides): Promise<[boolean]>;
+    "mintProgress()"(overrides?: CallOverrides): Promise<[boolean]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
@@ -465,6 +522,14 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    sendToCharity(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "sendToCharity()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setApprovalForAll(
       operator: string,
       approved: boolean,
@@ -506,6 +571,14 @@ export interface MyNFT extends BaseContract {
         completed: boolean;
       }
     >;
+
+    stepsCompleted(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { completed: BigNumber }>;
+
+    "stepsCompleted()"(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { completed: BigNumber }>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -590,6 +663,10 @@ export interface MyNFT extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  MINT_PRICE(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "MINT_PRICE()"(overrides?: CallOverrides): Promise<BigNumber>;
+
   abort(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -621,15 +698,29 @@ export interface MyNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  claimAbort(
+  charityIsSent(overrides?: CallOverrides): Promise<boolean>;
+
+  "charityIsSent()"(overrides?: CallOverrides): Promise<boolean>;
+
+  claimRefund(
     tokenIds: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  "claimAbort(uint256[])"(
+  "claimRefund(uint256[])"(
     tokenIds: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  claimableAmount(
+    tokenIds: BigNumberish[],
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "claimableAmount(uint256[])"(
+    tokenIds: BigNumberish[],
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   executeStep(
     stepId: BigNumberish,
@@ -655,14 +746,6 @@ export interface MyNFT extends BaseContract {
 
   "governanceIsApproved()"(overrides?: CallOverrides): Promise<boolean>;
 
-  helpKoalas(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  "helpKoalas()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   isApprovedForAll(
     owner: string,
     operator: string,
@@ -676,16 +759,20 @@ export interface MyNFT extends BaseContract {
   ): Promise<boolean>;
 
   mint(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    to: string,
+    quantity: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  "mint()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  "mint(address,uint256)"(
+    to: string,
+    quantity: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  mintedComplete(overrides?: CallOverrides): Promise<boolean>;
+  mintProgress(overrides?: CallOverrides): Promise<boolean>;
 
-  "mintedComplete()"(overrides?: CallOverrides): Promise<boolean>;
+  "mintProgress()"(overrides?: CallOverrides): Promise<boolean>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -739,6 +826,14 @@ export interface MyNFT extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  sendToCharity(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "sendToCharity()"(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setApprovalForAll(
     operator: string,
     approved: boolean,
@@ -780,6 +875,10 @@ export interface MyNFT extends BaseContract {
       completed: boolean;
     }
   >;
+
+  stepsCompleted(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "stepsCompleted()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   supportsInterface(
     interfaceId: BytesLike,
@@ -861,6 +960,10 @@ export interface MyNFT extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    MINT_PRICE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "MINT_PRICE()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     abort(overrides?: CallOverrides): Promise<void>;
 
     "abort()"(overrides?: CallOverrides): Promise<void>;
@@ -888,15 +991,29 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    claimAbort(
+    charityIsSent(overrides?: CallOverrides): Promise<boolean>;
+
+    "charityIsSent()"(overrides?: CallOverrides): Promise<boolean>;
+
+    claimRefund(
       tokenIds: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "claimAbort(uint256[])"(
+    "claimRefund(uint256[])"(
       tokenIds: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
+
+    claimableAmount(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "claimableAmount(uint256[])"(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     executeStep(stepId: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
@@ -919,10 +1036,6 @@ export interface MyNFT extends BaseContract {
 
     "governanceIsApproved()"(overrides?: CallOverrides): Promise<boolean>;
 
-    helpKoalas(overrides?: CallOverrides): Promise<void>;
-
-    "helpKoalas()"(overrides?: CallOverrides): Promise<void>;
-
     isApprovedForAll(
       owner: string,
       operator: string,
@@ -935,13 +1048,21 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    mint(overrides?: CallOverrides): Promise<void>;
+    mint(
+      to: string,
+      quantity: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    "mint()"(overrides?: CallOverrides): Promise<void>;
+    "mint(address,uint256)"(
+      to: string,
+      quantity: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    mintedComplete(overrides?: CallOverrides): Promise<boolean>;
+    mintProgress(overrides?: CallOverrides): Promise<boolean>;
 
-    "mintedComplete()"(overrides?: CallOverrides): Promise<boolean>;
+    "mintProgress()"(overrides?: CallOverrides): Promise<boolean>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -988,6 +1109,10 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    sendToCharity(overrides?: CallOverrides): Promise<void>;
+
+    "sendToCharity()"(overrides?: CallOverrides): Promise<void>;
+
     setApprovalForAll(
       operator: string,
       approved: boolean,
@@ -1025,6 +1150,10 @@ export interface MyNFT extends BaseContract {
         completed: boolean;
       }
     >;
+
+    stepsCompleted(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "stepsCompleted()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -1156,6 +1285,10 @@ export interface MyNFT extends BaseContract {
   };
 
   estimateGas: {
+    MINT_PRICE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "MINT_PRICE()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     abort(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1187,14 +1320,28 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    claimAbort(
+    charityIsSent(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "charityIsSent()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    claimRefund(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    "claimAbort(uint256[])"(
+    "claimRefund(uint256[])"(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    claimableAmount(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "claimableAmount(uint256[])"(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     executeStep(
@@ -1221,14 +1368,6 @@ export interface MyNFT extends BaseContract {
 
     "governanceIsApproved()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    helpKoalas(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    "helpKoalas()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     isApprovedForAll(
       owner: string,
       operator: string,
@@ -1242,16 +1381,20 @@ export interface MyNFT extends BaseContract {
     ): Promise<BigNumber>;
 
     mint(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: string,
+      quantity: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    "mint()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    "mint(address,uint256)"(
+      to: string,
+      quantity: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    mintedComplete(overrides?: CallOverrides): Promise<BigNumber>;
+    mintProgress(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "mintedComplete()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "mintProgress()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1308,6 +1451,14 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    sendToCharity(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "sendToCharity()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setApprovalForAll(
       operator: string,
       approved: boolean,
@@ -1334,6 +1485,10 @@ export interface MyNFT extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    stepsCompleted(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "stepsCompleted()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     supportsInterface(
       interfaceId: BytesLike,
@@ -1419,6 +1574,10 @@ export interface MyNFT extends BaseContract {
   };
 
   populateTransaction: {
+    MINT_PRICE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "MINT_PRICE()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     abort(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -1453,14 +1612,28 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    claimAbort(
+    charityIsSent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "charityIsSent()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    claimRefund(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    "claimAbort(uint256[])"(
+    "claimRefund(uint256[])"(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    claimableAmount(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "claimableAmount(uint256[])"(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     executeStep(
@@ -1491,14 +1664,6 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    helpKoalas(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "helpKoalas()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     isApprovedForAll(
       owner: string,
       operator: string,
@@ -1512,18 +1677,20 @@ export interface MyNFT extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     mint(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: string,
+      quantity: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    "mint()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    "mint(address,uint256)"(
+      to: string,
+      quantity: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    mintedComplete(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    mintProgress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "mintedComplete()"(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    "mintProgress()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1580,6 +1747,14 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    sendToCharity(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "sendToCharity()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     setApprovalForAll(
       operator: string,
       approved: boolean,
@@ -1607,6 +1782,12 @@ export interface MyNFT extends BaseContract {
 
     "steps(uint256)"(
       arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    stepsCompleted(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "stepsCompleted()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

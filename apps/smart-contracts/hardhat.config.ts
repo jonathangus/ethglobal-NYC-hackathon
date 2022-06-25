@@ -54,7 +54,7 @@ const config: HardhatUserConfig = {
     deployments: '../../packages/web3-config/deployments',
   },
   gasReporter: {
-    enabled: true,
+    enabled: false,
     currency: 'USD',
   },
   etherscan: {

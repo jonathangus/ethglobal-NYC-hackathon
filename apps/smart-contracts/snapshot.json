@@ -13,8 +13,7 @@
         "onlyMembers": false
     },
     "members": [],
-    "network": "1",
-    "plugins": {},
+    "network": "4",
     "twitter": "lootproject",
     "strategies": [
         {
@@ -28,5 +27,15 @@
     "validation": {
         "name": "basic",
         "params": {}
+    },
+    "plugins": {
+        "safeSnap": {
+            "safes": [
+                {
+                    "network": "4",
+                    "realityAddress": "0x155D4a89d45E098c1De2d00c285966305FB32960"
+                }
+            ]
+        }
     }
 }

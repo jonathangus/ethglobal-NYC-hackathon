@@ -5,6 +5,11 @@
         "internalType": "uint256",
         "name": "_reservedAmount",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_mintPrice",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -76,9 +81,28 @@
         "type": "uint256[]"
       }
     ],
-    "name": "claimAbort",
+    "name": "claimRefund",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "tokenIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "claimableAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -151,6 +175,19 @@
         "internalType": "bool",
         "name": "completed",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stepsCompleted",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "completed",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

@@ -21,19 +21,25 @@ export interface RoadmapInterface extends utils.Interface {
   contractName: "Roadmap";
   functions: {
     "abort()": FunctionFragment;
-    "claimAbort(uint256[])": FunctionFragment;
+    "claimRefund(uint256[])": FunctionFragment;
+    "claimableAmount(uint256[])": FunctionFragment;
     "executeStep(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "reverted()": FunctionFragment;
     "steps(uint256)": FunctionFragment;
+    "stepsCompleted()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "withdrawFunds()": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "abort", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "claimAbort",
+    functionFragment: "claimRefund",
+    values: [BigNumberish[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimableAmount",
     values: [BigNumberish[]]
   ): string;
   encodeFunctionData(
@@ -48,6 +54,10 @@ export interface RoadmapInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "reverted", values?: undefined): string;
   encodeFunctionData(functionFragment: "steps", values: [BigNumberish]): string;
   encodeFunctionData(
+    functionFragment: "stepsCompleted",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
@@ -57,7 +67,14 @@ export interface RoadmapInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "abort", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "claimAbort", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimRefund",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "claimableAmount",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "executeStep",
     data: BytesLike
@@ -69,6 +86,10 @@ export interface RoadmapInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "reverted", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "steps", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "stepsCompleted",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
@@ -144,15 +165,25 @@ export interface Roadmap extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    claimAbort(
+    claimRefund(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    "claimAbort(uint256[])"(
+    "claimRefund(uint256[])"(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    claimableAmount(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "claimableAmount(uint256[])"(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     executeStep(
       stepId: BigNumberish,
@@ -202,6 +233,14 @@ export interface Roadmap extends BaseContract {
       }
     >;
 
+    stepsCompleted(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { completed: BigNumber }>;
+
+    "stepsCompleted()"(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { completed: BigNumber }>;
+
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -229,15 +268,25 @@ export interface Roadmap extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  claimAbort(
+  claimRefund(
     tokenIds: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  "claimAbort(uint256[])"(
+  "claimRefund(uint256[])"(
     tokenIds: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  claimableAmount(
+    tokenIds: BigNumberish[],
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "claimableAmount(uint256[])"(
+    tokenIds: BigNumberish[],
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   executeStep(
     stepId: BigNumberish,
@@ -287,6 +336,10 @@ export interface Roadmap extends BaseContract {
     }
   >;
 
+  stepsCompleted(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "stepsCompleted()"(overrides?: CallOverrides): Promise<BigNumber>;
+
   transferOwnership(
     newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -310,15 +363,25 @@ export interface Roadmap extends BaseContract {
 
     "abort()"(overrides?: CallOverrides): Promise<void>;
 
-    claimAbort(
+    claimRefund(
       tokenIds: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "claimAbort(uint256[])"(
+    "claimRefund(uint256[])"(
       tokenIds: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
+
+    claimableAmount(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "claimableAmount(uint256[])"(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     executeStep(stepId: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
@@ -360,6 +423,10 @@ export interface Roadmap extends BaseContract {
         completed: boolean;
       }
     >;
+
+    stepsCompleted(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "stepsCompleted()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
       newOwner: string,
@@ -405,14 +472,24 @@ export interface Roadmap extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    claimAbort(
+    claimRefund(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    "claimAbort(uint256[])"(
+    "claimRefund(uint256[])"(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    claimableAmount(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "claimableAmount(uint256[])"(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     executeStep(
@@ -448,6 +525,10 @@ export interface Roadmap extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    stepsCompleted(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "stepsCompleted()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -476,14 +557,24 @@ export interface Roadmap extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    claimAbort(
+    claimRefund(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    "claimAbort(uint256[])"(
+    "claimRefund(uint256[])"(
       tokenIds: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    claimableAmount(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "claimableAmount(uint256[])"(
+      tokenIds: BigNumberish[],
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     executeStep(
@@ -519,6 +610,12 @@ export interface Roadmap extends BaseContract {
 
     "steps(uint256)"(
       arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    stepsCompleted(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "stepsCompleted()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

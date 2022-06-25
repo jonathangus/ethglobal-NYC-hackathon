@@ -1,4 +1,5 @@
 import { Chains } from 'web3-config';
+import { chain } from 'wagmi';
 
 type Config = {
   defaultChain: Chains;
@@ -21,6 +22,8 @@ if (process.env.NEXT_PUBLIC_WANTED_CHAIN) {
     }
   }
 }
+
+export const wantedChains = [chain.localhost];
 
 export const config: Config = {
   isProduction: process.env.NODE_ENV === 'production',

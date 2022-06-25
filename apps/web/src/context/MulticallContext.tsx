@@ -230,7 +230,7 @@ export const useMulticallStore = create<MyStore>((set, get) => ({
 
 export const MulticallProvider: FC = ({ children }) => {
   const provider = useProvider();
-  const [{ data: blockNumber }] = useBlockNumber({ watch: true });
+  const { data: blockNumber } = useBlockNumber({ watch: true });
   const multicallAddress = useAddress(Multicall2__factory);
   const multicall = useMemo(
     () =>

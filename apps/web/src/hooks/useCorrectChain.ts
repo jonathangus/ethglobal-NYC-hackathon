@@ -1,42 +1,26 @@
-import { FC, useEffect } from 'react';
 import { useNetwork } from 'wagmi';
 
-import useNotice from './useNotice';
+import { config, wantedChains } from '../config/config';
 
 const useCorrectChain = (): {
   isSupported: boolean;
   loading: boolean;
   currentChainId: number;
-  connectToCorrectChain: () => void;
 } => {
-  const [{ data, error, loading }, switchNetwork] = useNetwork();
+  const { isLoading, activeChain } = useNetwork({
+    chainId: config.defaultChain,
+  });
 
-  let isSupported = true;
-  if (typeof data?.chain?.unsupported !== 'undefined') {
-    isSupported = !data?.chain?.unsupported;
-  } else if (data.chains.length === 0) {
-    isSupported = true;
+  let currentChainId = config.defaultChain;
+
+  if (wantedChains.map((chain) => chain.id).includes(activeChain?.id)) {
+    currentChainId = activeChain.id;
   }
-  const notice = useNotice();
-
-  useEffect(() => {
-    if (error) {
-      notice({
-        status: 'error',
-        message: error.message,
-      });
-    }
-  }, [error]);
-
-  const connectToCorrectChain = () => {
-    switchNetwork(data?.chains[0]?.id);
-  };
 
   return {
-    isSupported,
-    loading,
-    connectToCorrectChain,
-    currentChainId: data?.chain?.id,
+    isSupported: !activeChain?.unsupported,
+    loading: isLoading,
+    currentChainId: currentChainId,
   };
 };
 

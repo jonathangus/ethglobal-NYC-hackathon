@@ -1,22 +1,19 @@
-import { Counter__factory } from 'web3-config';
-import ConnectButton from '../components/ConnectButton';
-import Counter from '../components/Counter';
+import { MyNFT__factory } from 'web3-config';
 import useReadContract from '../hooks/useReadContract';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Page = () => {
-  const { data: currentTimestamp } = useReadContract(
-    Counter__factory,
-    'currentTimestamp'
+  const { data: mintedComplete } = useReadContract(
+    MyNFT__factory,
+    'mintedComplete'
   );
+
   return (
     <div style={{ display: 'grid', gap: 20 }}>
-      <div>
-        <ConnectButton />
-      </div>
-      <Counter />
-      <Counter />
-      <Counter />
-      {currentTimestamp && <div>Current timestamp: {+currentTimestamp}</div>}
+      <ConnectButton />
+      {mintedComplete && (
+        <div>mintedComplete: {mintedComplete ? 'YES' : 'NO'}</div>
+      )}
     </div>
   );
 };

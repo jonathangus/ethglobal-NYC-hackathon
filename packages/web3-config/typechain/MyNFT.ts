@@ -21,11 +21,13 @@ export interface MyNFTInterface extends utils.Interface {
   contractName: "MyNFT";
   functions: {
     "abort()": FunctionFragment;
+    "apeIsSent()": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "claimAbort(uint256[])": FunctionFragment;
     "executeStep(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "governanceIsApproved()": FunctionFragment;
     "helpKoalas()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "mint()": FunctionFragment;
@@ -38,6 +40,7 @@ export interface MyNFTInterface extends utils.Interface {
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "sendApe(address)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
+    "setGovernanceApproved()": FunctionFragment;
     "steps(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
@@ -51,6 +54,7 @@ export interface MyNFTInterface extends utils.Interface {
   };
 
   encodeFunctionData(functionFragment: "abort", values?: undefined): string;
+  encodeFunctionData(functionFragment: "apeIsSent", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "approve",
     values: [string, BigNumberish]
@@ -67,6 +71,10 @@ export interface MyNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getApproved",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "governanceIsApproved",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "helpKoalas",
@@ -100,6 +108,10 @@ export interface MyNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "setApprovalForAll",
     values: [string, boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setGovernanceApproved",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "steps", values: [BigNumberish]): string;
   encodeFunctionData(
@@ -137,6 +149,7 @@ export interface MyNFTInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "abort", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "apeIsSent", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimAbort", data: BytesLike): Result;
@@ -146,6 +159,10 @@ export interface MyNFTInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "governanceIsApproved",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "helpKoalas", data: BytesLike): Result;
@@ -173,6 +190,10 @@ export interface MyNFTInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "sendApe", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setApprovalForAll",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setGovernanceApproved",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "steps", data: BytesLike): Result;
@@ -211,7 +232,7 @@ export interface MyNFTInterface extends utils.Interface {
     "Approval(address,address,uint256)": EventFragment;
     "ApprovalForAll(address,address,bool)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
-    "StepCreated(uint8,bytes4,string)": EventFragment;
+    "StepCreated(bytes32,string)": EventFragment;
     "StepExecuted(uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
@@ -247,8 +268,8 @@ export type OwnershipTransferredEventFilter =
   TypedEventFilter<OwnershipTransferredEvent>;
 
 export type StepCreatedEvent = TypedEvent<
-  [number, string, string],
-  { stepType: number; data: string; message: string }
+  [string, string],
+  { data: string; message: string }
 >;
 
 export type StepCreatedEventFilter = TypedEventFilter<StepCreatedEvent>;
@@ -300,6 +321,10 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    apeIsSent(overrides?: CallOverrides): Promise<[boolean]>;
+
+    "apeIsSent()"(overrides?: CallOverrides): Promise<[boolean]>;
+
     approve(
       to: string,
       tokenId: BigNumberish,
@@ -348,6 +373,10 @@ export interface MyNFT extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    governanceIsApproved(overrides?: CallOverrides): Promise<[boolean]>;
+
+    "governanceIsApproved()"(overrides?: CallOverrides): Promise<[boolean]>;
 
     helpKoalas(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -448,12 +477,19 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setGovernanceApproved(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    "setGovernanceApproved()"(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     steps(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [number, string, string, boolean] & {
-        stepType: number;
+      [string, string, boolean] & {
         data: string;
         message: string;
         completed: boolean;
@@ -464,8 +500,7 @@ export interface MyNFT extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [number, string, string, boolean] & {
-        stepType: number;
+      [string, string, boolean] & {
         data: string;
         message: string;
         completed: boolean;
@@ -563,6 +598,10 @@ export interface MyNFT extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  apeIsSent(overrides?: CallOverrides): Promise<boolean>;
+
+  "apeIsSent()"(overrides?: CallOverrides): Promise<boolean>;
+
   approve(
     to: string,
     tokenId: BigNumberish,
@@ -611,6 +650,10 @@ export interface MyNFT extends BaseContract {
     tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  governanceIsApproved(overrides?: CallOverrides): Promise<boolean>;
+
+  "governanceIsApproved()"(overrides?: CallOverrides): Promise<boolean>;
 
   helpKoalas(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -708,12 +751,19 @@ export interface MyNFT extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setGovernanceApproved(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  "setGovernanceApproved()"(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   steps(
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [number, string, string, boolean] & {
-      stepType: number;
+    [string, string, boolean] & {
       data: string;
       message: string;
       completed: boolean;
@@ -724,8 +774,7 @@ export interface MyNFT extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [number, string, string, boolean] & {
-      stepType: number;
+    [string, string, boolean] & {
       data: string;
       message: string;
       completed: boolean;
@@ -816,6 +865,10 @@ export interface MyNFT extends BaseContract {
 
     "abort()"(overrides?: CallOverrides): Promise<void>;
 
+    apeIsSent(overrides?: CallOverrides): Promise<boolean>;
+
+    "apeIsSent()"(overrides?: CallOverrides): Promise<boolean>;
+
     approve(
       to: string,
       tokenId: BigNumberish,
@@ -861,6 +914,10 @@ export interface MyNFT extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    governanceIsApproved(overrides?: CallOverrides): Promise<boolean>;
+
+    "governanceIsApproved()"(overrides?: CallOverrides): Promise<boolean>;
 
     helpKoalas(overrides?: CallOverrides): Promise<void>;
 
@@ -943,12 +1000,15 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setGovernanceApproved(overrides?: CallOverrides): Promise<void>;
+
+    "setGovernanceApproved()"(overrides?: CallOverrides): Promise<void>;
+
     steps(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [number, string, string, boolean] & {
-        stepType: number;
+      [string, string, boolean] & {
         data: string;
         message: string;
         completed: boolean;
@@ -959,8 +1019,7 @@ export interface MyNFT extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [number, string, string, boolean] & {
-        stepType: number;
+      [string, string, boolean] & {
         data: string;
         message: string;
         completed: boolean;
@@ -1075,16 +1134,11 @@ export interface MyNFT extends BaseContract {
       newOwner?: string | null
     ): OwnershipTransferredEventFilter;
 
-    "StepCreated(uint8,bytes4,string)"(
-      stepType?: null,
+    "StepCreated(bytes32,string)"(
       data?: null,
       message?: null
     ): StepCreatedEventFilter;
-    StepCreated(
-      stepType?: null,
-      data?: null,
-      message?: null
-    ): StepCreatedEventFilter;
+    StepCreated(data?: null, message?: null): StepCreatedEventFilter;
 
     "StepExecuted(uint256)"(stepId?: null): StepExecutedEventFilter;
     StepExecuted(stepId?: null): StepExecutedEventFilter;
@@ -1109,6 +1163,10 @@ export interface MyNFT extends BaseContract {
     "abort()"(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    apeIsSent(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "apeIsSent()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     approve(
       to: string,
@@ -1158,6 +1216,10 @@ export interface MyNFT extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    governanceIsApproved(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "governanceIsApproved()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     helpKoalas(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1255,6 +1317,14 @@ export interface MyNFT extends BaseContract {
     "setApprovalForAll(address,bool)"(
       operator: string,
       approved: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setGovernanceApproved(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    "setGovernanceApproved()"(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1357,6 +1427,10 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    apeIsSent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "apeIsSent()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     approve(
       to: string,
       tokenId: BigNumberish,
@@ -1406,6 +1480,14 @@ export interface MyNFT extends BaseContract {
 
     "getApproved(uint256)"(
       tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    governanceIsApproved(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "governanceIsApproved()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1507,6 +1589,14 @@ export interface MyNFT extends BaseContract {
     "setApprovalForAll(address,bool)"(
       operator: string,
       approved: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setGovernanceApproved(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "setGovernanceApproved()"(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

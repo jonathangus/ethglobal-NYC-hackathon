@@ -12,35 +12,33 @@ contract MyNFT is ERC721, ERC721Enumerable, Ownable, Roadmap {
     uint256 RESERVED_TREASURY_AMOUNT = 3 ether;
     bool apeSent = false;
     bool koalasSent = false;
+    bool governanceApproved = false;
 
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721('MyToken', 'MTK') Roadmap(RESERVED_TREASURY_AMOUNT) {
-        addStep(
-            StepTypes.GONVERNANE,
-            bytes4(keccak256('0x0000')),
-            'Governance approval'
-        );
-        addStep(
-            StepTypes.CALLDATA,
-            bytes4(keccak256('mintedComplete()')),
-            'Minting completed'
-        );
-        addStep(
-            StepTypes.CALLDATA,
-            bytes4(keccak256('apeSent()')),
-            'BAYC sent to user'
-        );
-        addStep(
-            StepTypes.CALLDATA,
-            bytes4(keccak256('koalasSent()')),
-            'Charity sent'
-        );
+        addStep('governanceIsApproved()', 'Governance approval');
+        addStep('mintedComplete()', 'Minting completed');
+        addStep('apeIsSent()', 'BAYC sent to user');
+        addStep('koalasSent()', 'Charity sent');
     }
 
     function mintedComplete() public view returns (bool) {
         return true;
         // return totalSupply() == 1000;
+    }
+
+    function setGovernanceApproved() public {
+        // validate sender
+        governanceApproved = true;
+    }
+
+    function governanceIsApproved() public view returns (bool) {
+        return governanceApproved;
+    }
+
+    function apeIsSent() public view returns (bool) {
+        return apeSent;
     }
 
     function sendApe(address newOwner) public onlyOwner {

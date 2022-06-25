@@ -34,15 +34,9 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "enum Roadmap.StepTypes",
-        "name": "stepType",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes4",
+        "internalType": "bytes32",
         "name": "data",
-        "type": "bytes4"
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -144,14 +138,9 @@
     "name": "steps",
     "outputs": [
       {
-        "internalType": "enum Roadmap.StepTypes",
-        "name": "stepType",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bytes4",
+        "internalType": "bytes32",
         "name": "data",
-        "type": "bytes4"
+        "type": "bytes32"
       },
       {
         "internalType": "string",

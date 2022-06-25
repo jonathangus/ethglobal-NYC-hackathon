@@ -24,7 +24,7 @@ function useWriteContract<
   options?: {
     address?: string;
     errorNotice?: boolean;
-    onSuccess?: (result: ethers.providers.TransactionResponse) => void;
+    onSuccess?: (result: ethers.providers.TransactionReceipt) => void;
     onError?: (error: Error) => void;
     onSuccessMessage?: () => string;
     onErrorMessage?: () => string;
@@ -57,61 +57,86 @@ function useWriteContract<
   const provider = useProvider();
 
   const notice = useNotice();
-  const [{ data, error, loading }, write] = useContractWrite(
+  const { data, error, isLoading, write } = useContractWrite(
     {
       addressOrName: address,
       contractInterface: typechainFactory.abi,
     },
-    method as string
+    method as string,
+
+    {
+      onError: (err: any) => {
+        if (options?.onError && err) {
+          options.onError(err);
+        }
+
+        if (errorNotice && err) {
+          let message;
+          if (err instanceof Error || err?.message) {
+            message = `${method} failed! Message: ${err.message}`;
+          } else {
+            console.log(err);
+            message = `${method} failed! Message: ${(
+              err as any as string[]
+            ).join(',')}`;
+          }
+
+          notice({
+            status: 'error',
+            message,
+          });
+        }
+      },
+    }
   );
 
-  const [{ loading: transactionLoading, ...rest }] = useWaitForTransaction({
+  const tx = useWaitForTransaction({
     hash: data?.hash,
+
+    onSettled: (result) => {
+      if (options?.onSuccess) {
+        options?.onSuccess(result);
+      }
+
+      if (options?.onSuccessMessage) {
+        notice({
+          status: 'success',
+          message: options.onSuccessMessage(),
+        });
+      }
+
+      if (options?.onSuccessRefetch) {
+        const wantedAddress = options.onSuccessRefetch.address || address;
+        const cacheKey = getCacheKey({
+          ...options.onSuccessRefetch,
+          args: options.onSuccessRefetch.params || [],
+          address: wantedAddress,
+        });
+
+        queueIfNeeded(
+          {
+            ...options.onSuccessRefetch,
+            args: options.onSuccessRefetch.params || [],
+            address: wantedAddress,
+            cacheKey,
+          },
+          typechainFactory,
+          provider
+        );
+      }
+    },
   });
 
   const _write = async (config?: {
     params?: Parameters<ContractFunctions<T>[TFunctionName]>;
     overrides?: ethers.CallOverrides;
   }) => {
-    const params = config?.params || {};
-    const result = await write({
+    const params = config?.params || [];
+
+    await write({
       args: params,
       overrides: config?.overrides,
     });
-    // await result.data.wait(1);
-
-    if (options?.onSuccessRefetch) {
-      const wantedAddress = options.onSuccessRefetch.address || address;
-      const cacheKey = getCacheKey({
-        ...options.onSuccessRefetch,
-        args: options.onSuccessRefetch.params || [],
-        address: wantedAddress,
-      });
-
-      queueIfNeeded(
-        {
-          ...options.onSuccessRefetch,
-          args: options.onSuccessRefetch.params || [],
-          address: wantedAddress,
-          cacheKey,
-        },
-        typechainFactory,
-        provider
-      );
-    }
-    const isSuccess = !result?.error;
-    if (isSuccess && options?.onSuccess) {
-      options?.onSuccess(result?.data);
-    }
-
-    if (isSuccess && options?.onSuccessMessage) {
-      notice({
-        status: 'success',
-        message: options.onSuccessMessage(),
-      });
-    }
-
-    return result;
   };
 
   useEffect(() => {
@@ -141,7 +166,7 @@ function useWriteContract<
     {
       data: data as Awaited<ReturnType<ContractFunctions<T>[TFunctionName]>>,
       error,
-      loading: loading || transactionLoading,
+      loading: isLoading || tx.isLoading,
     },
     _write as (config?: {
       params?: Parameters<ContractFunctions<T>[TFunctionName]>;

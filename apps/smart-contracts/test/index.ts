@@ -2,11 +2,10 @@ import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
 import { ethers } from 'hardhat';
-import { Roadmap } from 'web3-config';
+import { MyNFT, Roadmap } from 'web3-config';
 
 describe('Roadmap', function () {
-  let roadmap: Roadmap;
-
+  let nftContract: MyNFT;
   let owner: SignerWithAddress;
   let addr1: SignerWithAddress;
   let addr2: SignerWithAddress;
@@ -15,14 +14,25 @@ describe('Roadmap', function () {
   beforeEach(async () => {
     [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
 
-    const RoadmapContract = await ethers.getContractFactory('Roadmap');
-    roadmap = (await RoadmapContract.deploy()) as Roadmap;
-    await roadmap.deployed();
+    const NFTContract = await ethers.getContractFactory('MyNFT');
+    nftContract = (await NFTContract.deploy()) as MyNFT;
+    await nftContract.deployed();
   });
 
-  describe('deployment', async () => {
-    it('should deploy', async () => {
-      expect(0).to.eq(0);
+  describe('execute', async () => {
+    it('should execute', async () => {
+      // await nftContract.executeStep(1);
+      let error = false;
+
+      try {
+        await nftContract.executeStep(2);
+      } catch (e) {
+        error = true;
+      }
+      expect(error).to.eq(true);
+      // await nftContract.executeStep(3);
+      await nftContract.sendApe(owner.address);
+      await nftContract.executeStep(2);
     });
   });
 });

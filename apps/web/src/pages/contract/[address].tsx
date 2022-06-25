@@ -1,4 +1,5 @@
 import { Container, Row, Col, Card, Text, Button } from '@nextui-org/react';
+import Roadmap from '../../components/Roadmap';
 
 const steps = [{ completed: true, id: 1, message: 'Jattebra NYC' }];
 
@@ -32,6 +33,7 @@ const AddressExpanded = () => {
           </Container>
         </Card.Header>
         <Card.Body>
+          <Roadmap></Roadmap>
           {steps.map((s) => (
             <Row key={s.id}>
               <Text>{s.message}</Text>

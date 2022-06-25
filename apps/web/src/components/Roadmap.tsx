@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Task from "../components/Task";
+import { Avatar, Grid } from "@nextui-org/react";
 
-function Roadmap() {
+function Roadmap({currentTaskIdx}) {
   const [currentTask, setCurrentTask] = useState(0);
 
   const [tasks] = useState([
@@ -29,7 +30,7 @@ function Roadmap() {
 
   return (
     <>
-      <div>
+      <Grid.Container gap={2}>
         {tasks.map((task, index) => (
           <Task
             key={task.id}
@@ -41,9 +42,9 @@ function Roadmap() {
             isLast={index + 1 >= tasks.length}
           />
         ))}
-      </div>
+      </Grid.Container>
 
-      <div className="buttons">
+      {/* <div className="buttons">
         <button
           onClick={() => currentTask > 0 && setCurrentTask(currentTask - 1)}
           disabled={currentTask <= 0}
@@ -60,7 +61,7 @@ function Roadmap() {
         >
           Next
         </button>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -1,30 +1,55 @@
-import { MyNFT__factory } from 'web3-config';
-import useReadContract from '../hooks/useReadContract';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { Container, Row, Input, Button } from '@nextui-org/react';
+import { useNotifications } from 'reapop';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import useWriteContract from '../hooks/useWriteContract';
-import useUserAddress from '../hooks/useUserAddress';
+
+const ADDRESS_REGEX = /^0x[0-9a-f]{40}$/i;
 
 const Page = () => {
-  const { data: mintedComplete } = useReadContract(
-    MyNFT__factory,
-    'mintedComplete'
-  );
+  const router = useRouter();
+  const [contractAddress, setContractAddress] = useState('');
+  const { notify } = useNotifications();
 
-  const userAddress = useUserAddress();
-  const [_, mint] = useWriteContract(MyNFT__factory, 'mint');
-  const { data: minted } = useReadContract(MyNFT__factory, 'balanceOf', {
-    params: [userAddress as string],
-  });
+  const handleAddressLookup = () => {
+    if (ADDRESS_REGEX.test(contractAddress)) {
+      router.push(`/contract/${contractAddress}`);
+    } else {
+      notify(`${contractAddress} is not a valid address`, 'error');
+    }
+  };
 
   return (
-    <div style={{ display: 'grid', gap: 20 }}>
-      {minted && <div>You minted: {+minted}</div>}
-      <ConnectButton />
-      <button onClick={() => mint()}>Mint</button>
-      {mintedComplete && (
-        <div>mintedComplete: {mintedComplete ? 'YES' : 'NO'}</div>
-      )}
-    </div>
+    <Container fluid css={{ height: '100%' }}>
+      <Row align="flex-end" justify="flex-end">
+        <ConnectButton />
+      </Row>
+      <Container
+        display="flex"
+        wrap="nowrap"
+        direction="column"
+        justify="center"
+        css={{
+          maxWidth: 700,
+          margin: 'auto',
+          height: 'calc(100% - 50px)',
+        }}
+      >
+        <Row>
+          <Input
+            fullWidth
+            placeholder="Enter contract address"
+            value={contractAddress}
+            onChange={(e) => setContractAddress(e.target.value)}
+          />
+        </Row>
+        <Row>
+          <Button css={{ margin: '8px auto' }} onClick={handleAddressLookup}>
+            Look up
+          </Button>
+        </Row>
+      </Container>
+    </Container>
   );
 };
 

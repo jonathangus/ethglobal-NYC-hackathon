@@ -26,6 +26,7 @@ export interface MyNFTInterface extends utils.Interface {
     "apeIsSent()": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "callbackError()": FunctionFragment;
     "charityIsSent()": FunctionFragment;
     "claimRefund(uint256[])": FunctionFragment;
     "claimableAmount(uint256[])": FunctionFragment;
@@ -44,7 +45,7 @@ export interface MyNFTInterface extends utils.Interface {
     "sendApe(address)": FunctionFragment;
     "sendToCharity()": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
-    "setGovernanceApproved()": FunctionFragment;
+    "stepCount()": FunctionFragment;
     "steps(uint256)": FunctionFragment;
     "stepsCompleted()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -69,6 +70,10 @@ export interface MyNFTInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "callbackError",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "charityIsSent",
     values?: undefined
@@ -129,10 +134,7 @@ export interface MyNFTInterface extends utils.Interface {
     functionFragment: "setApprovalForAll",
     values: [string, boolean]
   ): string;
-  encodeFunctionData(
-    functionFragment: "setGovernanceApproved",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "stepCount", values?: undefined): string;
   encodeFunctionData(functionFragment: "steps", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "stepsCompleted",
@@ -177,6 +179,10 @@ export interface MyNFTInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "apeIsSent", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "callbackError",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "charityIsSent",
     data: BytesLike
@@ -231,10 +237,7 @@ export interface MyNFTInterface extends utils.Interface {
     functionFragment: "setApprovalForAll",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "setGovernanceApproved",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "stepCount", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "steps", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "stepsCompleted",
@@ -391,6 +394,10 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    callbackError(overrides?: CallOverrides): Promise<[boolean]>;
+
+    "callbackError()"(overrides?: CallOverrides): Promise<[boolean]>;
+
     charityIsSent(overrides?: CallOverrides): Promise<[boolean]>;
 
     "charityIsSent()"(overrides?: CallOverrides): Promise<[boolean]>;
@@ -542,13 +549,9 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setGovernanceApproved(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    stepCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "setGovernanceApproved()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    "stepCount()"(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     steps(
       arg0: BigNumberish,
@@ -698,6 +701,10 @@ export interface MyNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  callbackError(overrides?: CallOverrides): Promise<boolean>;
+
+  "callbackError()"(overrides?: CallOverrides): Promise<boolean>;
+
   charityIsSent(overrides?: CallOverrides): Promise<boolean>;
 
   "charityIsSent()"(overrides?: CallOverrides): Promise<boolean>;
@@ -846,13 +853,9 @@ export interface MyNFT extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setGovernanceApproved(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  stepCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "setGovernanceApproved()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  "stepCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   steps(
     arg0: BigNumberish,
@@ -991,6 +994,10 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    callbackError(overrides?: CallOverrides): Promise<boolean>;
+
+    "callbackError()"(overrides?: CallOverrides): Promise<boolean>;
+
     charityIsSent(overrides?: CallOverrides): Promise<boolean>;
 
     "charityIsSent()"(overrides?: CallOverrides): Promise<boolean>;
@@ -1125,9 +1132,9 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setGovernanceApproved(overrides?: CallOverrides): Promise<void>;
+    stepCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "setGovernanceApproved()"(overrides?: CallOverrides): Promise<void>;
+    "stepCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     steps(
       arg0: BigNumberish,
@@ -1320,6 +1327,10 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    callbackError(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "callbackError()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     charityIsSent(overrides?: CallOverrides): Promise<BigNumber>;
 
     "charityIsSent()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1471,13 +1482,9 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setGovernanceApproved(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    stepCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "setGovernanceApproved()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    "stepCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     steps(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1611,6 +1618,10 @@ export interface MyNFT extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    callbackError(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "callbackError()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     charityIsSent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1767,13 +1778,9 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    setGovernanceApproved(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    stepCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "setGovernanceApproved()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    "stepCount()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     steps(
       arg0: BigNumberish,

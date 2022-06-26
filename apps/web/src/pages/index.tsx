@@ -66,7 +66,7 @@ const Page = () => {
             Safer
           </Text>
         </>
-        <Row style={{marginTop:'18px'}}>
+        <Row style={{marginTop:'38px'}}>
           <Input
             fullWidth
             placeholder="Enter contract address"

@@ -4,9 +4,8 @@ import { MulticallProvider } from '../context/MulticallContext';
 import { NotificationsProvider } from 'reapop';
 import NotificationHandler from '../components/NotificationHandler';
 import Web3Provider from '../components/Web3Provider';
-import { NextUIProvider } from '@nextui-org/react';
-// import "../styles/globals.css";
-
+import { NextUIProvider, Row } from '@nextui-org/react';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -14,6 +13,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NotificationsProvider>
         <Web3Provider>
           <MulticallProvider>
+            <Row
+              align="flex-end"
+              justify="flex-end"
+              css={{ padding: '24px 24px 48px 24px' }}
+            >
+              <ConnectButton />
+            </Row>
             <Component {...pageProps} />
             <NotificationHandler />
 

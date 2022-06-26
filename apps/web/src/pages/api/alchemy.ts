@@ -5,16 +5,12 @@ import axios from 'axios';
 const apiKey = 'DB8XDJ0TFFQBY5_3yACW1PODLm8o8aVb';
 const baseURL = `https://eth-kovan.alchemyapi.io/nft/v2/${apiKey}`;
 
-const OS_BASE_URL = 'https://testnets-api.opensea.io/api/v1';
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { data } = await axios({
       method: 'GET',
       url: `${baseURL}/${req.body.path}`,
     });
-
-    console.log(data);
 
     return res.status(200).json(data);
   } else {

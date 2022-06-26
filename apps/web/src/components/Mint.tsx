@@ -15,8 +15,8 @@ const Mint = () => {
     <Button
       css={{
         position: 'fixed',
-        right: '$4',
-        bottom: '$4',
+        right: '$8',
+        bottom: '$8',
       }}
       auto
       ghost

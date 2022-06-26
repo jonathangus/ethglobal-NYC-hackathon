@@ -23,13 +23,7 @@ function Task({ step, title, description, isActive, isDone, isLast, func }) {
         ></Avatar>
 
         <div style={{ marginLeft: '12px', justifyContent: 'space-between' }}>
-          <Text
-            h5
-            // css={{
-            //   textGradient: "45deg, $blue600 -20%, $pink600 50%",
-            // }}
-            weight="bold"
-          >
+          <Text h5 weight="bold">
             {title}
           </Text>
           <Text size={12}> {description} </Text>

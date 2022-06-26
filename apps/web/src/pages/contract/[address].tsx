@@ -158,6 +158,9 @@ const AddressExpanded = () => {
               disabled={contractOwner !== connectedAddress}
               onClick={() => withdraw()}
             >
+              {!isContractReverted && !complete && (
+                <div>You need to abort to withdraw</div>
+              )}
               {isContractReverted && RESERVED_TREASURY_AMOUNT && (
                 <div>
                   Withdraw amount {formatBigNumber(RESERVED_TREASURY_AMOUNT)}{' '}

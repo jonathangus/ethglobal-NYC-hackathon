@@ -31,12 +31,6 @@ import { Avatar, Grid } from '@nextui-org/react';
 function Roadmap({ stepsCompleted }) {
   const [tasks] = useState([
     {
-      id: 0,
-      title: 'Governance approval',
-      description: 'governanceIsApproved()',
-      func: 'governanceIsApproved',
-    },
-    {
       id: 1,
       title: 'Half minted',
       description: 'mintProgress()',
@@ -53,6 +47,12 @@ function Roadmap({ stepsCompleted }) {
       title: 'Charity sent',
       description: 'charityIsSent()',
       func: 'charityIsSent',
+    },
+    {
+      id: 0,
+      title: 'Governance approval',
+      description: 'governanceIsApproved()',
+      func: 'governanceIsApproved',
     },
   ]);
 

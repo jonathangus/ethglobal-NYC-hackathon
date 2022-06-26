@@ -1,8 +1,19 @@
 import React from "react";
-import { Avatar, Grid, Text } from "@nextui-org/react";
+import { Avatar, Button, Grid, Text } from "@nextui-org/react";
+import useReadContract from '../hooks/useReadContract';
+import useContractWrite from '../hooks/useWriteContract'
+import { MyNFT__factory } from 'web3-config';
 
+function Task({ step, title, description, isActive, isDone, isLast, func }) {
 
-function Task({ step, title, description, isActive, isDone, isLast }) {
+  const { data: canExecute } = useReadContract(
+    MyNFT__factory,
+    func
+  )
+
+  const [, execute] = useContractWrite(MyNFT__factory, 'executeStep');
+
+  console.log(step.toString() + func + " execute: ", canExecute)
   return (
     <Grid>
       <Grid.Container className="task" direction="row">
@@ -14,7 +25,8 @@ function Task({ step, title, description, isActive, isDone, isLast }) {
         >
         </Avatar>
 
-        <div style={{marginLeft: '12px'}}>
+
+        <div style={{marginLeft: '12px', justifyContent:'space-between'}}>
           <Text
             h5
             // css={{
@@ -25,7 +37,25 @@ function Task({ step, title, description, isActive, isDone, isLast }) {
             {title} 
           </Text>
           <Text  size={12}> {description} </Text>
+
         </div>
+
+        { 
+          !isDone && (
+            <Button 
+              style={{marginLeft:'12px'}}
+              size='xs'
+              disabled={!canExecute} 
+              onClick={()=>{execute({
+                params: [
+                  step-1
+                ],
+              })}}
+            >
+                execute
+            </Button>
+          )
+        }
       </Grid.Container>
     </Grid>
   );

@@ -4,7 +4,7 @@ import { useTheme as useNextTheme } from 'next-themes';
 
 export const Header = () => {
   const { setTheme } = useNextTheme();
-  const { isDark, type } = useTheme();
+  const { isDark } = useTheme();
 
   return (
     <Row

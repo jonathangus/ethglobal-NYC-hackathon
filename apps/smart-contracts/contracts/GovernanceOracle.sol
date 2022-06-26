@@ -11,8 +11,7 @@ contract GovernanceOracle {
     string private s1 =
         'q:title: Have the snapshot vote containing [ROADMAP_ACCPECTED] completed with more than 50 percentage';
     string private s2 = ' of the votes are YES?,';
-    bytes public ancillaryData =
-        '0x713a486176652074686520736e617073686f7420766f746520636f6e7461696e696e67205b524f41444d41505f4143435045435445445d20636f6d706c657465642077697468206d6f7265207468656e2035302070657263656e74616765206f662074686520766f74657320617265205945533f2c68747470733a2f2f64656d6f2e736e617073686f742e6f72672f232f6465766465766465762e657468';
+    bytes public ancillaryData = abi.encodePacked(s1, s2, snapshot);
     bytes32 private priceIdentifier = 'YES_OR_NO_QUERY';
 
     uint256 private creationTimestamp = block.timestamp;

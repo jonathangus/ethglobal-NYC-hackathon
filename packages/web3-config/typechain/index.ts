@@ -13,11 +13,7 @@ export type { ERC165 } from "./ERC165";
 export type { IERC165 } from "./IERC165";
 export type { FinderInterface } from "./FinderInterface";
 export type { OptimisticOracleInterface } from "./OptimisticOracleInterface";
-<<<<<<< HEAD
-export type { OptimisticOracleV2Interface } from "./OptimisticOracleV2Interface";
 export type { GovernanceOracle } from "./GovernanceOracle";
-=======
->>>>>>> 3fd46529be782b6bcacbfa4aaf878f6afd8c6139
 export type { Multicall2 } from "./Multicall2";
 export type { MyNFT } from "./MyNFT";
 export type { SafeLaunch } from "./SafeLaunch";
@@ -34,11 +30,7 @@ export { ERC165__factory } from "./factories/ERC165__factory";
 export { IERC165__factory } from "./factories/IERC165__factory";
 export { FinderInterface__factory } from "./factories/FinderInterface__factory";
 export { OptimisticOracleInterface__factory } from "./factories/OptimisticOracleInterface__factory";
-<<<<<<< HEAD
-export { OptimisticOracleV2Interface__factory } from "./factories/OptimisticOracleV2Interface__factory";
 export { GovernanceOracle__factory } from "./factories/GovernanceOracle__factory";
-=======
->>>>>>> 3fd46529be782b6bcacbfa4aaf878f6afd8c6139
 export { Multicall2__factory } from "./factories/Multicall2__factory";
 export { MyNFT__factory } from "./factories/MyNFT__factory";
 export { SafeLaunch__factory } from "./factories/SafeLaunch__factory";

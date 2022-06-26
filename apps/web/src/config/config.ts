@@ -7,7 +7,7 @@ type Config = {
   INFURA_ID: string;
 };
 
-export let defaultChain = Chains.RINKEBY;
+export let defaultChain = Chains.KOVAN;
 
 const INFURA_ID = process.env.NEXT_PUBLIC_INFURA_ID;
 
@@ -23,7 +23,7 @@ if (process.env.NEXT_PUBLIC_WANTED_CHAIN) {
   }
 }
 
-export const wantedChains = [chain.rinkeby, chain.kovan];
+export const wantedChains = [chain.kovan];
 
 export const config: Config = {
   isProduction: process.env.NODE_ENV === 'production',

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Container, Row, Input, Button, Text } from '@nextui-org/react';
 import { useNotifications } from 'reapop';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import useAddress from '../hooks/useAddress';
 import { MyNFT__factory } from 'web3-config';
 
@@ -13,6 +12,7 @@ const Page = () => {
   const [contractAddress, setContractAddress] = useState('');
   const { notify } = useNotifications();
   const address = useAddress(MyNFT__factory);
+  console.log({ address });
   const handleAddressLookup = () => {
     if (ADDRESS_REGEX.test(address)) {
       router.push(`/contract/${address}`);
@@ -39,17 +39,17 @@ const Page = () => {
             h1
             size={60}
             css={{
-              textGradient: "45deg, $blue600 -20%, $pink600 50%",
+              textGradient: '45deg, $blue600 -20%, $pink600 50%',
             }}
             weight="bold"
           >
-            Let's
+            {" Let's"}
           </Text>
           <Text
             h1
             size={60}
             css={{
-              textGradient: "45deg, $purple600 -20%, $pink600 100%",
+              textGradient: '45deg, $purple600 -20%, $pink600 100%',
             }}
             weight="bold"
           >
@@ -59,14 +59,14 @@ const Page = () => {
             h1
             size={60}
             css={{
-              textGradient: "45deg, $yellow600 -20%, $red600 100%",
+              textGradient: '45deg, $yellow600 -20%, $red600 100%',
             }}
             weight="bold"
           >
             Safer
           </Text>
         </>
-        <Row style={{marginTop:'38px'}}>
+        <Row style={{ marginTop: '38px' }}>
           <Input
             fullWidth
             placeholder="Enter contract address"

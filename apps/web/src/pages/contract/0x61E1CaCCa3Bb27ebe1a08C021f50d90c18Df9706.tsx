@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import {
   Container,
   Row,
@@ -20,12 +19,12 @@ import Roadmap from '../../components/Roadmap';
 import Mint from '../../components/Mint';
 import { formatAddressToShort, formatBigNumber } from '../../utils/formatter';
 import useWriteContract from '../../hooks/useWriteContract';
+import useAddress from '../../hooks/useAddress';
 
 const AddressExpanded = () => {
-  const router = useRouter();
-  const { address: contractAddress }: { address?: string } = router.query;
-  const provider = useProvider();
-  const { data: { address: connectedAddress } = {} } = useAccount();
+  const contractAddress = useAddress(MyNFT__factory);
+  const { data } = useAccount();
+  const connectedAddress = data?.address;
   const [started, setStarted] = useState(false);
   const [, abortProject] = useContractWrite(MyNFT__factory, 'abort');
   const [, claimNfts] = useContractWrite(MyNFT__factory, 'claimRefund');

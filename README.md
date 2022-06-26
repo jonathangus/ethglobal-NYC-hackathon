@@ -1,6 +1,7 @@
-# Web3 fullstack starter
+# NFT Safe Launch
 
-My ideal monorepo setup for working with fullstack web3 development. Can be used for quick prototyping or built on top on for production ready projects.
+
+It should be either fuck roadmaps or it should be on-chain. No more empty promises of donations/airdrops. Create a smart contract that locks the funds of an ERC-721 until some condition is met. Until the condition is met the owner of the contract can only call abort that will return 80% of the ETH to the minters to claim. A condition could be totalSupply=100% or a governance proposal approved. We want to remove trust-based roadmaps for NFT projects. The projects now need to meet certain conditions before gaining access to the treasury. As a holder, you’ll get to be part of the minting process by active governance. A win-win situation if you ask us
 
 ### Core packages
 - `ethers`

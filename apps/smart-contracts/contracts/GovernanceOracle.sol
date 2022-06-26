@@ -64,8 +64,6 @@ contract GovernanceOracle {
 
         if (price == 1e18) {
             governanceApproved = true;
-        } else {
-            callbackError = true;
         }
     }
 }

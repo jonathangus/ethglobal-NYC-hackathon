@@ -19,10 +19,16 @@ const AddressExpanded = () => {
   const [started, setStarted] = useState(false);
   const [, abortProject] = useContractWrite(MyNFT__factory, 'abort');
   const [, claimNfts] = useContractWrite(MyNFT__factory, 'claimRefund');
+  const [, approveNfts] = useContractWrite(MyNFT__factory, 'setApprovalForAll');
   const { data: contractOwner } = useReadContract(MyNFT__factory, 'owner');
   const { data: isContractReverted } = useReadContract(
     MyNFT__factory,
     'reverted'
+  );
+  const { data: isApprovedForAll } = useReadContract(
+    MyNFT__factory,
+    'isApprovedForAll',
+    { params: [connectedAddress, contractAddress] }
   );
 
   const [{ data: accountAssets = {}, loading }, getAccountAssets] = useAxios(
@@ -99,11 +105,19 @@ const AddressExpanded = () => {
             </Button>
             <Button
               disabled={accountAssets?.totalCount < 1 || !isContractReverted}
-              onClick={() =>
-                claimNfts({
-                  params: [accountAssets.ownedNfts.map((aa) => aa.id.tokenId)],
-                })
-              }
+              onClick={() => {
+                if (!isApprovedForAll) {
+                  approveNfts({ params: [contractAddress, true] });
+                } else {
+                  claimNfts({
+                    params: [
+                      accountAssets.ownedNfts.map((aa) =>
+                        ethers.BigNumber.from(aa.id.tokenId).toNumber()
+                      ),
+                    ],
+                  });
+                }
+              }}
             >
               Claim
             </Button>

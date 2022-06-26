@@ -1,4 +1,38 @@
-# Web3 fullstack starter
+# NFT Safe Launch
+
+Extend your ERC-721 smart contract with an on-chain roadmap and invite your minters to governance. No more empty promises and rugg pulls a win win for everyone!
+
+
+## Problem Statement:
+
+The NFT minting process today is built on trust. 
+
+NFT projects are one of the few cases where projects instantly get a hold on the full treasure specifically the primary sales of the NFTs. We see a gap in the market where where projects and minters can benefit from more accountability, transparency and clarity in the NFT launch. The NFT space is full of big commitments and promises. We want to push for a change in narrative of the mint process and make it safer! At the same time we give the opportunity for projects to increase their legitimacy and credibility. 
+
+You're usually told to DYOR, check the team, real social engagement why if trust is already embedded in the NFT smart contract? Gaining a free and uncontrolled access to the primary sale is wrongfully incentivising NFT projects. Extend your mint contract with an on-chain roadmap with set milestones and conditions. Use off-chain data like snapshot votes to vote on the milestones by utilising our UMA oracle integration.
+
+NFT Safe Launch - get your roadmap on-chain. Trust to the projects, trust to the minters by being trust-less.
+
+## Solution
+
+
+The projects now need to meet certain conditions before gaining access to the treasury. As a holder you’ll get to be part of the minting process by active governance.  A win-win situation if you ask us
+
+ No more empty promises of donations/airdrops. Extend your ERC-721 smart contract and lock the primary sales funds until specific conditions are met. We believe in changing the narrative of automatic access to the treasury and that holder should be allowed to partake in the governance in the minting process. 
+
+We want to remove trust-based roadmaps for NFT projects by incorporating conditions before unlocking the treasury and a governance vote for the minters at 50% mint supply to see if they still believe in the project or if they want to abandon it. 
+
+
+## Example
+
+In our example we have a project with 4 steps in their roadmap:
+Step 1: promise of sending donations to a charity:
+Step 2: sending a BAYC to one of the minters after 100% minted out.
+Step 3: 50% governance vote, do the minters want to abandon the project or continue!
+Step 4: 
+
+## Tech Stacks
+
 
 My ideal monorepo setup for working with fullstack web3 development. Can be used for quick prototyping or built on top on for production ready projects.
 

@@ -16,7 +16,7 @@ export const Header = () => {
       <Link href="/" passHref>
         <Text
           h1
-          size={24}
+          size={20}
           css={{
             textGradient: "45deg, $blue600 -20%, $pink600 50%",
             cursor: 'pointer'

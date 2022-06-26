@@ -9,10 +9,9 @@ const ADDRESS_REGEX = /^0x[0-9a-f]{40}$/i;
 
 const Page = () => {
   const router = useRouter();
-  const [contractAddress, setContractAddress] = useState('');
-  const { notify } = useNotifications();
   const address = useAddress(MyNFT__factory);
-  console.log({ address });
+  const [contractAddress, setContractAddress] = useState(address);
+  const { notify } = useNotifications();
   const handleAddressLookup = () => {
     if (ADDRESS_REGEX.test(address)) {
       router.push(`/contract/${address}`);
@@ -39,31 +38,11 @@ const Page = () => {
             h1
             size={60}
             css={{
-              textGradient: '45deg, $blue600 -20%, $pink600 50%',
-            }}
-            weight="bold"
-          >
-            {" Let's"}
-          </Text>
-          <Text
-            h1
-            size={60}
-            css={{
-              textGradient: '45deg, $purple600 -20%, $pink600 100%',
-            }}
-            weight="bold"
-          >
-            Make NFTs
-          </Text>
-          <Text
-            h1
-            size={60}
-            css={{
               textGradient: '45deg, $yellow600 -20%, $red600 100%',
             }}
             weight="bold"
           >
-            Safer
+            Bring trust to your NFT project
           </Text>
         </>
         <Row style={{ marginTop: '38px' }}>

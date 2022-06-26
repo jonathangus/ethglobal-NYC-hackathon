@@ -42,13 +42,7 @@ const useMulticallState = (
   const loading = useMulticallStore((state) => state.loading[cacheKey]);
 
   useEffect(() => {
-    if (
-      enabled &&
-      isSupported &&
-      internetConnection &&
-      windowActive &&
-      provider
-    ) {
+    if (enabled && internetConnection && windowActive && provider) {
       queueIfNeeded({ cacheKey, method, address, args }, factory, provider);
     }
 

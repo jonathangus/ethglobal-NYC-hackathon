@@ -23,17 +23,14 @@ export interface MyNFTInterface extends utils.Interface {
   functions: {
     "MINT_PRICE()": FunctionFragment;
     "abort()": FunctionFragment;
-    "ancillaryData()": FunctionFragment;
     "apeIsSent()": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "callbackError()": FunctionFragment;
     "charityIsSent()": FunctionFragment;
     "claimRefund(uint256[])": FunctionFragment;
     "claimableAmount(uint256[])": FunctionFragment;
     "executeStep(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
-    "governanceApproved()": FunctionFragment;
     "governanceIsApproved()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "mint(address,uint256)": FunctionFragment;
@@ -41,9 +38,7 @@ export interface MyNFTInterface extends utils.Interface {
     "name()": FunctionFragment;
     "owner()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
-    "priceSettled(bytes32,uint256,bytes,int256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "requestGovernanceCheck()": FunctionFragment;
     "reverted()": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "sendApe(address)": FunctionFragment;
@@ -68,20 +63,12 @@ export interface MyNFTInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "abort", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "ancillaryData",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "apeIsSent", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "approve",
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "callbackError",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "charityIsSent",
     values?: undefined
@@ -101,10 +88,6 @@ export interface MyNFTInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getApproved",
     values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "governanceApproved",
-    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "governanceIsApproved",
@@ -129,15 +112,7 @@ export interface MyNFTInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "priceSettled",
-    values: [BytesLike, BigNumberish, BytesLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "requestGovernanceCheck",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "reverted", values?: undefined): string;
@@ -196,17 +171,9 @@ export interface MyNFTInterface extends utils.Interface {
 
   decodeFunctionResult(functionFragment: "MINT_PRICE", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "abort", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "ancillaryData",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "apeIsSent", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "callbackError",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "charityIsSent",
     data: BytesLike
@@ -228,10 +195,6 @@ export interface MyNFTInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "governanceApproved",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "governanceIsApproved",
     data: BytesLike
   ): Result;
@@ -248,15 +211,7 @@ export interface MyNFTInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "priceSettled",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "requestGovernanceCheck",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "reverted", data: BytesLike): Result;
@@ -407,10 +362,6 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    ancillaryData(overrides?: CallOverrides): Promise<[string]>;
-
-    "ancillaryData()"(overrides?: CallOverrides): Promise<[string]>;
-
     apeIsSent(overrides?: CallOverrides): Promise<[boolean]>;
 
     "apeIsSent()"(overrides?: CallOverrides): Promise<[boolean]>;
@@ -433,10 +384,6 @@ export interface MyNFT extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
-
-    callbackError(overrides?: CallOverrides): Promise<[boolean]>;
-
-    "callbackError()"(overrides?: CallOverrides): Promise<[boolean]>;
 
     charityIsSent(overrides?: CallOverrides): Promise<[boolean]>;
 
@@ -481,10 +428,6 @@ export interface MyNFT extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    governanceApproved(overrides?: CallOverrides): Promise<[boolean]>;
-
-    "governanceApproved()"(overrides?: CallOverrides): Promise<[boolean]>;
 
     governanceIsApproved(overrides?: CallOverrides): Promise<[boolean]>;
 
@@ -536,35 +479,11 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    priceSettled(
-      identifier: BytesLike,
-      timestamp: BigNumberish,
-      _ancillaryData: BytesLike,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    "priceSettled(bytes32,uint256,bytes,int256)"(
-      identifier: BytesLike,
-      timestamp: BigNumberish,
-      _ancillaryData: BytesLike,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     "renounceOwnership()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    requestGovernanceCheck(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    "requestGovernanceCheck()"(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -746,10 +665,6 @@ export interface MyNFT extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  ancillaryData(overrides?: CallOverrides): Promise<string>;
-
-  "ancillaryData()"(overrides?: CallOverrides): Promise<string>;
-
   apeIsSent(overrides?: CallOverrides): Promise<boolean>;
 
   "apeIsSent()"(overrides?: CallOverrides): Promise<boolean>;
@@ -772,10 +687,6 @@ export interface MyNFT extends BaseContract {
     owner: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
-
-  callbackError(overrides?: CallOverrides): Promise<boolean>;
-
-  "callbackError()"(overrides?: CallOverrides): Promise<boolean>;
 
   charityIsSent(overrides?: CallOverrides): Promise<boolean>;
 
@@ -820,10 +731,6 @@ export interface MyNFT extends BaseContract {
     tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
-
-  governanceApproved(overrides?: CallOverrides): Promise<boolean>;
-
-  "governanceApproved()"(overrides?: CallOverrides): Promise<boolean>;
 
   governanceIsApproved(overrides?: CallOverrides): Promise<boolean>;
 
@@ -872,35 +779,11 @@ export interface MyNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  priceSettled(
-    identifier: BytesLike,
-    timestamp: BigNumberish,
-    _ancillaryData: BytesLike,
-    price: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  "priceSettled(bytes32,uint256,bytes,int256)"(
-    identifier: BytesLike,
-    timestamp: BigNumberish,
-    _ancillaryData: BytesLike,
-    price: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   "renounceOwnership()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  requestGovernanceCheck(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  "requestGovernanceCheck()"(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1071,10 +954,6 @@ export interface MyNFT extends BaseContract {
 
     "abort()"(overrides?: CallOverrides): Promise<void>;
 
-    ancillaryData(overrides?: CallOverrides): Promise<string>;
-
-    "ancillaryData()"(overrides?: CallOverrides): Promise<string>;
-
     apeIsSent(overrides?: CallOverrides): Promise<boolean>;
 
     "apeIsSent()"(overrides?: CallOverrides): Promise<boolean>;
@@ -1097,10 +976,6 @@ export interface MyNFT extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    callbackError(overrides?: CallOverrides): Promise<boolean>;
-
-    "callbackError()"(overrides?: CallOverrides): Promise<boolean>;
 
     charityIsSent(overrides?: CallOverrides): Promise<boolean>;
 
@@ -1142,10 +1017,6 @@ export interface MyNFT extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    governanceApproved(overrides?: CallOverrides): Promise<boolean>;
-
-    "governanceApproved()"(overrides?: CallOverrides): Promise<boolean>;
 
     governanceIsApproved(overrides?: CallOverrides): Promise<boolean>;
 
@@ -1194,29 +1065,9 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    priceSettled(
-      identifier: BytesLike,
-      timestamp: BigNumberish,
-      _ancillaryData: BytesLike,
-      price: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "priceSettled(bytes32,uint256,bytes,int256)"(
-      identifier: BytesLike,
-      timestamp: BigNumberish,
-      _ancillaryData: BytesLike,
-      price: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
-
-    requestGovernanceCheck(overrides?: CallOverrides): Promise<void>;
-
-    "requestGovernanceCheck()"(overrides?: CallOverrides): Promise<void>;
 
     reverted(overrides?: CallOverrides): Promise<boolean>;
 
@@ -1432,10 +1283,6 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    ancillaryData(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "ancillaryData()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     apeIsSent(overrides?: CallOverrides): Promise<BigNumber>;
 
     "apeIsSent()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1458,10 +1305,6 @@ export interface MyNFT extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    callbackError(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "callbackError()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     charityIsSent(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1506,10 +1349,6 @@ export interface MyNFT extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    governanceApproved(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "governanceApproved()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     governanceIsApproved(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1561,35 +1400,11 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    priceSettled(
-      identifier: BytesLike,
-      timestamp: BigNumberish,
-      _ancillaryData: BytesLike,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    "priceSettled(bytes32,uint256,bytes,int256)"(
-      identifier: BytesLike,
-      timestamp: BigNumberish,
-      _ancillaryData: BytesLike,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     "renounceOwnership()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    requestGovernanceCheck(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    "requestGovernanceCheck()"(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1753,10 +1568,6 @@ export interface MyNFT extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    ancillaryData(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "ancillaryData()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     apeIsSent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "apeIsSent()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1782,10 +1593,6 @@ export interface MyNFT extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    callbackError(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "callbackError()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     charityIsSent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1828,14 +1635,6 @@ export interface MyNFT extends BaseContract {
 
     "getApproved(uint256)"(
       tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    governanceApproved(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "governanceApproved()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1893,35 +1692,11 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    priceSettled(
-      identifier: BytesLike,
-      timestamp: BigNumberish,
-      _ancillaryData: BytesLike,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "priceSettled(bytes32,uint256,bytes,int256)"(
-      identifier: BytesLike,
-      timestamp: BigNumberish,
-      _ancillaryData: BytesLike,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     "renounceOwnership()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    requestGovernanceCheck(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    "requestGovernanceCheck()"(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

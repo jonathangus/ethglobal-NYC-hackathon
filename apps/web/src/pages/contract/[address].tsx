@@ -17,6 +17,7 @@ import useReadContract from '../../hooks/useReadContract';
 import { useEffect, useState } from 'react';
 import { MyNFT__factory } from 'web3-config';
 import Roadmap from '../../components/Roadmap';
+import Mint from '../../components/Mint';
 
 const AddressExpanded = () => {
   const router = useRouter();
@@ -151,6 +152,7 @@ const AddressExpanded = () => {
           </Row>
         </Card.Footer>
       </Card>
+      <Mint />
     </Container>
   );
 };

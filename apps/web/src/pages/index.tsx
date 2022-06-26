@@ -37,33 +37,23 @@ const Page = () => {
         <>
           <Text
             h1
-            size={60}
+            size={48}
             css={{
               textGradient: "45deg, $blue600 -20%, $pink600 50%",
             }}
             weight="bold"
           >
-            Let's
+            Get your roadmap on-chain
           </Text>
           <Text
             h1
-            size={60}
-            css={{
-              textGradient: "45deg, $purple600 -20%, $pink600 100%",
-            }}
-            weight="bold"
-          >
-            Make NFTs
-          </Text>
-          <Text
-            h1
-            size={60}
+            size={48}
             css={{
               textGradient: "45deg, $yellow600 -20%, $red600 100%",
             }}
             weight="bold"
           >
-            Safer
+            Bring trust to your NFT project
           </Text>
         </>
         <Row style={{marginTop:'38px'}}>

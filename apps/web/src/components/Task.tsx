@@ -13,7 +13,7 @@ function Task({ step, title, description, isActive, isDone, isLast, func }) {
 
   const [, execute] = useContractWrite(MyNFT__factory, 'executeStep');
 
-  console.log(func + " execute: ", canExecute)
+  console.log(step.toString() + func + " execute: ", canExecute)
   return (
     <Grid>
       <Grid.Container className="task" direction="row">
@@ -45,7 +45,7 @@ function Task({ step, title, description, isActive, isDone, isLast, func }) {
             <Button 
               style={{marginLeft:'12px'}}
               size='xs'
-              disabled={canExecute} 
+              disabled={!canExecute} 
               onClick={()=>{execute({
                 params: [
                   step

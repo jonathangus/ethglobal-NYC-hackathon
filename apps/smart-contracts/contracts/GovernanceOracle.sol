@@ -12,28 +12,25 @@ contract GovernanceOracle {
         'q:title: Have the snapshot vote containing [ROADMAP_ACCPECTED] completed with more than 50 percentage';
     string private s2 = ' of the votes are YES?,';
     bytes public ancillaryData =
-        '0x713a7469746c653a20486176652074686520736e617073686f7420766f746520636f6e7461696e696e67205b524f41444d41505f4143435045435445445d20636f6d706c657465642077697468206d6f7265207468616e2035302070657263656e74616765';
-
+        '0x713a486176652074686520736e617073686f7420766f746520636f6e7461696e696e67205b524f41444d41505f4143435045435445445d20636f6d706c657465642077697468206d6f7265207468656e2035302070657263656e74616765206f662074686520766f74657320617265205945533f2c68747470733a2f2f64656d6f2e736e617073686f742e6f72672f232f6465766465766465762e657468';
     bytes32 private priceIdentifier = 'YES_OR_NO_QUERY';
 
     uint256 private creationTimestamp = block.timestamp;
+    address DAI = 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99;
 
-    function getOptimisticOracle()
-        internal
-        view
-        returns (OptimisticOracleInterface)
-    {
+    OptimisticOracleInterface optimisticOracle;
+
+    constructor() {
         address finderAddress = 0xeD0169a88d267063184b0853BaAAAe66c3c154B2;
         FinderInterface finder = FinderInterface(finderAddress);
-        return
-            OptimisticOracleInterface(
-                finder.getImplementationAddress('OptimisticOracle')
-            );
+        optimisticOracle = OptimisticOracleInterface(
+            finder.getImplementationAddress('OptimisticOracle')
+        );
+
+        IERC20(DAI).approve(address(optimisticOracle), 200e18);
     }
 
     function requestGovernanceCheck() public {
-        OptimisticOracleInterface optimisticOracle = getOptimisticOracle();
-
         address DAI_KOVAN = 0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99;
 
         optimisticOracle.requestPrice(
@@ -58,7 +55,6 @@ contract GovernanceOracle {
         bytes memory _ancillaryData,
         int256 price
     ) external {
-        OptimisticOracleInterface optimisticOracle = getOptimisticOracle();
         require(msg.sender == address(optimisticOracle), 'not authorized');
         require(timestamp == creationTimestamp, 'different timestamps');
         require(identifier == priceIdentifier, 'same identifier');

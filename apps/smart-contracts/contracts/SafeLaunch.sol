@@ -126,11 +126,15 @@ contract SafeLaunch is Ownable {
     }
 
     function withdrawFunds() external onlyOwner {
-        for (uint256 i = 0; i < steps.length; i++) {
-            require(steps[i].completed, 'Not completed');
-        }
+        if (reverted) {
+            payable(msg.sender).transfer(reservedAmount);
+        } else {
+            for (uint256 i = 0; i < steps.length; i++) {
+                require(steps[i].completed, 'Not completed');
+            }
 
-        uint256 balance = address(this).balance;
-        payable(msg.sender).transfer(balance);
+            uint256 balance = address(this).balance;
+            payable(msg.sender).transfer(balance);
+        }
     }
 }

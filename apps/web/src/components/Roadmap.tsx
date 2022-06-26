@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import Task from "../components/Task";
-import { Avatar, Grid } from "@nextui-org/react";
-
+import React, { useState } from 'react';
+import Task from '../components/Task';
+import { Avatar, Grid } from '@nextui-org/react';
 
 // constructor()
 // ERC721('MyToken', 'MTK')
@@ -29,40 +28,37 @@ import { Avatar, Grid } from "@nextui-org/react";
 // return apeSent;
 // }
 
-
-function Roadmap({stepsCompleted}) {
-  console.log("Steps Completed:", stepsCompleted)
-
+function Roadmap({ stepsCompleted }) {
   const [tasks] = useState([
     {
+      id: 0,
+      title: 'Governance approval',
+      description: 'governanceIsApproved()',
+      func: 'governanceIsApproved',
+    },
+    {
       id: 1,
-      title: "Governance approval",
-      description: "governanceIsApproved()",
-      func: "governanceIsApproved"
+      title: 'Half minted',
+      description: 'mintProgress()',
+      func: 'mintProgress',
     },
     {
       id: 2,
-      title: "Half minted",
-      description: "mintProgress()",
-      func: "mintProgress"
+      title: 'BAYC sent to user',
+      description: 'apeIsSent()',
+      func: 'apeIsSent',
     },
     {
       id: 3,
-      title: "BAYC sent to user",
-      description: "apeIsSent()",
-      func: "apeIsSent"
-    },
-    {
-      id: 4,
-      title: "Charity sent",
-      description: "charityIsSent()",
-      func: "charityIsSent"
+      title: 'Charity sent',
+      description: 'charityIsSent()',
+      func: 'charityIsSent',
     },
   ]);
 
   return (
     <>
-      <Grid.Container gap={2} direction='column'>
+      <Grid.Container gap={2} direction="column">
         {tasks.map((task, index) => (
           <Task
             key={task.id}

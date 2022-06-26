@@ -9,7 +9,7 @@ import {
   Image,
 } from '@nextui-org/react';
 import useAxios from 'axios-hooks';
-import { useProvider, useAccount, useContractRead } from 'wagmi';
+import { useProvider, useAccount, useContractRead, useBalance } from 'wagmi';
 import { ethers } from 'ethers';
 
 import useContractWrite from '../../hooks/useWriteContract';
@@ -18,18 +18,25 @@ import { useEffect, useState } from 'react';
 import { MyNFT__factory } from 'web3-config';
 import Roadmap from '../../components/Roadmap';
 import Mint from '../../components/Mint';
+import { formatAddressToShort, formatBigNumber } from '../../utils/formatter';
+import useWriteContract from '../../hooks/useWriteContract';
 
 const AddressExpanded = () => {
   const router = useRouter();
   const { address: contractAddress }: { address?: string } = router.query;
   const provider = useProvider();
   const { data: { address: connectedAddress } = {} } = useAccount();
-  const [contractBalance, setContractBalance] = useState<string>();
   const [started, setStarted] = useState(false);
   const [, abortProject] = useContractWrite(MyNFT__factory, 'abort');
   const [, claimNfts] = useContractWrite(MyNFT__factory, 'claimRefund');
   const [, approveNfts] = useContractWrite(MyNFT__factory, 'setApprovalForAll');
   const { data: contractOwner } = useReadContract(MyNFT__factory, 'owner');
+
+  const { data: RESERVED_TREASURY_AMOUNT } = useReadContract(
+    MyNFT__factory,
+    'RESERVED_TREASURY_AMOUNT'
+  );
+
   const { data: isContractReverted } = useReadContract(
     MyNFT__factory,
     'reverted'
@@ -44,12 +51,20 @@ const AddressExpanded = () => {
     { params: [connectedAddress, contractAddress] }
   );
 
-  console.log({ totalSupply });
   const { data: stepsCompleted } = useReadContract(
     MyNFT__factory,
     'stepsCompleted'
   );
 
+  const [withdrawData, withdraw] = useWriteContract(
+    MyNFT__factory,
+    'withdrawFunds'
+  );
+  const { data: balance } = useBalance({
+    addressOrName: contractAddress,
+  });
+
+  const contractBalance = balance?.formatted;
   const [{ data: accountAssets = {}, loading }, getAccountAssets] = useAxios(
     {
       url: '/api/alchemy',
@@ -62,13 +77,7 @@ const AddressExpanded = () => {
   );
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      const contractBalanceRes = await provider.getBalance(contractAddress);
-      setContractBalance(ethers.utils.formatEther(contractBalanceRes));
-    };
-
     if (contractAddress) {
-      fetchBalance();
       getAccountAssets();
     }
   }, [contractAddress]);
@@ -85,7 +94,9 @@ const AddressExpanded = () => {
   }
 
   const doesAddressOwnNfts = accountAssets?.totalCount > 1;
-
+  const complete = Boolean(
+    stepsCompleted && contractBalance && stepsCompleted.toNumber() === 4
+  );
   return (
     <Container
       fluid
@@ -111,10 +122,19 @@ const AddressExpanded = () => {
           >
             <Col>
               <Text h4>MyNFT</Text>
-              <Text h6>{contractAddress}</Text>
+              <Text h6>
+                {contractAddress && formatAddressToShort(contractAddress)}
+              </Text>
             </Col>
             <Col style={{ textAlign: 'right' }}>
-              <Text h4>Balance: {contractBalance} ETH</Text>
+              <Text h4>Contract balance: {contractBalance} ETH</Text>
+              <Text h4>
+                Locked for the team:{' '}
+                {RESERVED_TREASURY_AMOUNT &&
+                  formatBigNumber(RESERVED_TREASURY_AMOUNT)}{' '}
+                ETH
+              </Text>
+
               <Text h4>Total supply: {totalSupply.toNumber()}</Text>
               <Text h4>You own: {accountAssets.ownedNfts?.length}</Text>
             </Col>
@@ -125,30 +145,47 @@ const AddressExpanded = () => {
         </Card.Body>
         <Card.Footer>
           <Row justify="space-between">
+            {!complete && (
+              <Button
+                disabled={contractOwner !== connectedAddress}
+                onClick={() => abortProject()}
+              >
+                Abandon
+              </Button>
+            )}
+
             <Button
               disabled={contractOwner !== connectedAddress}
-              onClick={() => abortProject()}
+              onClick={() => withdraw()}
             >
-              Abandon
+              {isContractReverted && RESERVED_TREASURY_AMOUNT && (
+                <div>
+                  Withdraw amount {formatBigNumber(RESERVED_TREASURY_AMOUNT)}{' '}
+                  ETH
+                </div>
+              )}
+              {complete && <div>Withdraw amount {contractBalance} ETH</div>}
             </Button>
-            <Button
-              disabled={!doesAddressOwnNfts || !isContractReverted}
-              onClick={() => {
-                if (!isApprovedForAll) {
-                  approveNfts({ params: [contractAddress, true] });
-                } else {
-                  claimNfts({
-                    params: [
-                      accountAssets.ownedNfts.map((aa) =>
-                        ethers.BigNumber.from(aa.id.tokenId).toNumber()
-                      ),
-                    ],
-                  });
-                }
-              }}
-            >
-              Claim
-            </Button>
+            {!complete && (
+              <Button
+                disabled={!doesAddressOwnNfts || !isContractReverted}
+                onClick={() => {
+                  if (!isApprovedForAll) {
+                    approveNfts({ params: [contractAddress, true] });
+                  } else {
+                    claimNfts({
+                      params: [
+                        accountAssets.ownedNfts.map((aa) =>
+                          ethers.BigNumber.from(aa.id.tokenId).toNumber()
+                        ),
+                      ],
+                    });
+                  }
+                }}
+              >
+                Claim
+              </Button>
+            )}
           </Row>
         </Card.Footer>
       </Card>

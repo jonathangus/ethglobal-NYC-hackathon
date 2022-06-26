@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router';
 import { Container, Row, Col, Card, Text, Button } from '@nextui-org/react';
 import useAxios from 'axios-hooks';
-import { useProvider, useAccount } from 'wagmi';
+import { useProvider, useAccount, useContractRead } from 'wagmi';
 import { ethers } from 'ethers';
 
-import useReadContract from '../../hooks/useReadContract';
 import useContractWrite from '../../hooks/useWriteContract';
-import useAddress from '../../hooks/useAddress';
+import useReadContract from '../../hooks/useReadContract';
 import { useEffect, useState } from 'react';
 import { MyNFT__factory } from 'web3-config';
 import Roadmap from '../../components/Roadmap';
@@ -19,31 +18,19 @@ const AddressExpanded = () => {
   const [contractBalance, setContractBalance] = useState<string>();
   const [started, setStarted] = useState(false);
   const [, abortProject] = useContractWrite(MyNFT__factory, 'abort');
-  const [, claimNfts] = useContractWrite(MyNFT__factory, 'claimAbort');
-
-  const [
-    { data: { assets: accountAssets = [] } = {}, loading },
-    getAccountAssets,
-  ] = useAxios(
-    {
-      url: '/api/opensea',
-      method: 'POST',
-      data: {
-        path: `assets?owner=${connectedAddress}&asset_contract_address=${contractAddress}`,
-      },
-    },
-    { manual: true }
+  const [, claimNfts] = useContractWrite(MyNFT__factory, 'claimRefund');
+  const { data: contractOwner } = useReadContract(MyNFT__factory, 'owner');
+  const { data: isContractReverted } = useReadContract(
+    MyNFT__factory,
+    'reverted'
   );
 
-  const [
-    { data: collectionData, loading: collectionDataLoading },
-    getCollection,
-  ] = useAxios(
+  const [{ data: accountAssets = {}, loading }, getAccountAssets] = useAxios(
     {
-      url: '/api/opensea',
+      url: '/api/alchemy',
       method: 'POST',
       data: {
-        path: `asset_contract/${contractAddress}`,
+        path: `getNFTs/?owner=${connectedAddress}&contractAddresses[]=${contractAddress}`,
       },
     },
     { manual: true }
@@ -56,16 +43,10 @@ const AddressExpanded = () => {
     };
 
     if (contractAddress) {
-      getCollection();
       fetchBalance();
       getAccountAssets();
     }
   }, [contractAddress]);
-
-  // const { data, error } = useReadContract(MyNFT__factory, 'b', {
-  //   params: [accountData?.address as string],
-  //   enabled: !!accountData?.address,
-  // });
 
   useEffect(() => {
     setStarted(true);
@@ -74,7 +55,7 @@ const AddressExpanded = () => {
     return null;
   }
 
-  if (collectionDataLoading || !collectionData || loading) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -97,7 +78,7 @@ const AddressExpanded = () => {
             css={{ flexFlow: 'nowrap' }}
           >
             <Col>
-              <Text h4>{collectionData.name}</Text>
+              <Text h4>MyNFT</Text>
               <Text h6>{contractAddress}</Text>
             </Col>
             <Col style={{ textAlign: 'right' }}>
@@ -110,8 +91,22 @@ const AddressExpanded = () => {
         </Card.Body>
         <Card.Footer>
           <Row justify="space-between">
-            <Button onClick={() => abortProject()}>Abandon</Button>
-            <Button onClick={() => claimNfts()}>Claim</Button>
+            <Button
+              disabled={contractOwner !== connectedAddress}
+              onClick={() => abortProject()}
+            >
+              Abandon
+            </Button>
+            <Button
+              disabled={accountAssets?.totalCount < 1 || !isContractReverted}
+              onClick={() =>
+                claimNfts({
+                  params: [accountAssets.ownedNfts.map((aa) => aa.id.tokenId)],
+                })
+              }
+            >
+              Claim
+            </Button>
           </Row>
         </Card.Footer>
       </Card>

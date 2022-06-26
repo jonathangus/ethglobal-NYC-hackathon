@@ -23,7 +23,7 @@ if (process.env.NEXT_PUBLIC_WANTED_CHAIN) {
   }
 }
 
-export const wantedChains = [chain.rinkeby];
+export const wantedChains = [chain.rinkeby, chain.kovan];
 
 export const config: Config = {
   isProduction: process.env.NODE_ENV === 'production',

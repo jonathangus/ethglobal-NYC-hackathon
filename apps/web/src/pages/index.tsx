@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Container, Row, Input, Button } from '@nextui-org/react';
+import { Container, Row, Input, Button, Text } from '@nextui-org/react';
 import { useNotifications } from 'reapop';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import useAddress from '../hooks/useAddress';
@@ -34,7 +34,39 @@ const Page = () => {
           height: 'calc(100% - 50px)',
         }}
       >
-        <Row>
+        <>
+          <Text
+            h1
+            size={60}
+            css={{
+              textGradient: "45deg, $blue600 -20%, $pink600 50%",
+            }}
+            weight="bold"
+          >
+            Let's
+          </Text>
+          <Text
+            h1
+            size={60}
+            css={{
+              textGradient: "45deg, $purple600 -20%, $pink600 100%",
+            }}
+            weight="bold"
+          >
+            Make NFTs
+          </Text>
+          <Text
+            h1
+            size={60}
+            css={{
+              textGradient: "45deg, $yellow600 -20%, $red600 100%",
+            }}
+            weight="bold"
+          >
+            Safer
+          </Text>
+        </>
+        <Row style={{marginTop:'18px'}}>
           <Input
             fullWidth
             placeholder="Enter contract address"
@@ -45,7 +77,7 @@ const Page = () => {
         <Row>
           <Button
             color="primary"
-            css={{ margin: '8px auto' }}
+            css={{ margin: '18px auto', width: '100%' }}
             onClick={handleAddressLookup}
           >
             Look up

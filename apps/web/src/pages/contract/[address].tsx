@@ -44,6 +44,10 @@ const AddressExpanded = () => {
   );
 
   console.log({ totalSupply });
+  const { data: stepsCompleted } = useReadContract(
+    MyNFT__factory,
+    'stepsCompleted'
+  );
 
   const [{ data: accountAssets = {}, loading }, getAccountAssets] = useAxios(
     {
@@ -116,7 +120,7 @@ const AddressExpanded = () => {
           </Container>
         </Card.Header>
         <Card.Body>
-          <Roadmap></Roadmap>
+          <Roadmap stepsCompleted={stepsCompleted.toNumber()}></Roadmap>
         </Card.Body>
         <Card.Footer>
           <Row justify="space-between">

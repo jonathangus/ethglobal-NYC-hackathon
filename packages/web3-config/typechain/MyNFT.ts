@@ -26,7 +26,6 @@ export interface MyNFTInterface extends utils.Interface {
     "apeIsSent()": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "callbackError()": FunctionFragment;
     "charityIsSent()": FunctionFragment;
     "claimRefund(uint256[])": FunctionFragment;
     "claimableAmount(uint256[])": FunctionFragment;
@@ -70,10 +69,6 @@ export interface MyNFTInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "callbackError",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "charityIsSent",
     values?: undefined
@@ -179,10 +174,6 @@ export interface MyNFTInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "apeIsSent", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "callbackError",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "charityIsSent",
     data: BytesLike
@@ -393,10 +384,6 @@ export interface MyNFT extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
-
-    callbackError(overrides?: CallOverrides): Promise<[boolean]>;
-
-    "callbackError()"(overrides?: CallOverrides): Promise<[boolean]>;
 
     charityIsSent(overrides?: CallOverrides): Promise<[boolean]>;
 
@@ -701,10 +688,6 @@ export interface MyNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  callbackError(overrides?: CallOverrides): Promise<boolean>;
-
-  "callbackError()"(overrides?: CallOverrides): Promise<boolean>;
-
   charityIsSent(overrides?: CallOverrides): Promise<boolean>;
 
   "charityIsSent()"(overrides?: CallOverrides): Promise<boolean>;
@@ -993,10 +976,6 @@ export interface MyNFT extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    callbackError(overrides?: CallOverrides): Promise<boolean>;
-
-    "callbackError()"(overrides?: CallOverrides): Promise<boolean>;
 
     charityIsSent(overrides?: CallOverrides): Promise<boolean>;
 
@@ -1327,10 +1306,6 @@ export interface MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    callbackError(overrides?: CallOverrides): Promise<BigNumber>;
-
-    "callbackError()"(overrides?: CallOverrides): Promise<BigNumber>;
-
     charityIsSent(overrides?: CallOverrides): Promise<BigNumber>;
 
     "charityIsSent()"(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1618,10 +1593,6 @@ export interface MyNFT extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    callbackError(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    "callbackError()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     charityIsSent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

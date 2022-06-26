@@ -40,27 +40,33 @@ describe('Roadmap', function () {
     });
 
     it('should be reclaimable', async () => {
+      const test = await nftContract.ancillaryData();
+      console.log(':::::', test);
       const mintPrice = await nftContract.MINT_PRICE();
-      await nftContract.mint(owner.address, 10, { value: mintPrice.mul(10) });
+      await nftContract.mint(owner.address, 9, { value: mintPrice.mul(9) });
       const balance = await nftContract.balanceOf(owner.address);
-      expect(+balance).to.eq(10);
+      expect(+balance).to.eq(9);
       let claimableAmount = await nftContract.claimableAmount([1, 2, 3]);
 
       expect(+claimableAmount).to.eq(0);
 
-      await nftContract.mint(owner.address, 30, {
-        value: mintPrice.mul(30),
+      await nftContract.mint(owner.address, 31, {
+        value: mintPrice.mul(31),
       });
       claimableAmount = await nftContract.claimableAmount([1]);
 
-      expect(ethers.utils.parseEther('0.025').toString()).to.eq(
+      expect(ethers.utils.parseEther('0.00075').toString()).to.eq(
         claimableAmount.toString()
       );
 
-      expect(ethers.utils.parseEther('0.025').toString()).to.eq(
+      await nftContract.sendApe(owner.address);
+      await nftContract.executeStep(2);
+
+      claimableAmount = await nftContract.claimableAmount([1]);
+
+      expect(ethers.utils.parseEther('0.0005625').toString()).to.eq(
         claimableAmount.toString()
       );
-
       await nftContract.abort();
       await nftContract.setApprovalForAll(nftContract.address, true);
       await nftContract.claimRefund([1]);

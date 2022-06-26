@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Task from "../components/Task";
 import { Avatar, Grid } from "@nextui-org/react";
 
-function Roadmap({currentTaskIdx}) {
-  const [currentTask, setCurrentTask] = useState(0);
+function Roadmap({stepsCompleted}) {
+  console.log("Steps Completed:", stepsCompleted)
 
   const [tasks] = useState([
     {
@@ -37,31 +37,12 @@ function Roadmap({currentTaskIdx}) {
             title={task.title}
             description={task.description}
             step={index + 1}
-            isDone={currentTask > index}
-            isActive={currentTask === index}
+            isDone={stepsCompleted > index}
+            isActive={stepsCompleted === index}
             isLast={index + 1 >= tasks.length}
           />
         ))}
       </Grid.Container>
-
-      <div className="buttons">
-        <button
-          onClick={() => currentTask > 0 && setCurrentTask(currentTask - 1)}
-          disabled={currentTask <= 0}
-          className={currentTask <= 0 ? "disabled" : ""}
-        >
-          Back
-        </button>
-        <button
-          onClick={() =>
-            currentTask < tasks.length && setCurrentTask(currentTask + 1)
-          }
-          disabled={currentTask >= tasks.length}
-          className={currentTask >= tasks.length ? "disabled" : ""}
-        >
-          Next
-        </button>
-      </div>
     </>
   );
 }

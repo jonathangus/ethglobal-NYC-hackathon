@@ -5,7 +5,7 @@ import { NotificationsProvider } from 'reapop';
 import NotificationHandler from '../components/NotificationHandler';
 import Web3Provider from '../components/Web3Provider';
 import { NextUIProvider } from '@nextui-org/react';
-import "../styles/globals.css";
+// import "../styles/globals.css";
 
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -7,7 +7,7 @@ class MyDocument extends Document {
     const initialProps = await Document.getInitialProps(ctx);
     return {
       ...initialProps,
-      styles: React.Children.toArray([initialProps.styles])
+      styles: React.Children.toArray([initialProps.styles]),
     };
   }
 
@@ -16,6 +16,16 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>{CssBaseline.flush()}</Head>
         <body>
+          <style global jsx>{`
+            html,
+            body,
+            body > div:first-child,
+            div#__next,
+            div#__next > div {
+              height: 100%;
+              margin: 0px;
+            }
+          `}</style>
           <Main />
           <NextScript />
         </body>

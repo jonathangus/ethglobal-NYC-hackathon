@@ -30,7 +30,7 @@ function Roadmap({currentTaskIdx}) {
 
   return (
     <>
-      <Grid.Container gap={2}>
+      <Grid.Container gap={2} direction='column'>
         {tasks.map((task, index) => (
           <Task
             key={task.id}
@@ -44,7 +44,7 @@ function Roadmap({currentTaskIdx}) {
         ))}
       </Grid.Container>
 
-      {/* <div className="buttons">
+      <div className="buttons">
         <button
           onClick={() => currentTask > 0 && setCurrentTask(currentTask - 1)}
           disabled={currentTask <= 0}
@@ -61,7 +61,7 @@ function Roadmap({currentTaskIdx}) {
         >
           Next
         </button>
-      </div> */}
+      </div>
     </>
   );
 }

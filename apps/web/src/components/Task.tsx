@@ -48,7 +48,7 @@ function Task({ step, title, description, isActive, isDone, isLast, func }) {
               disabled={!canExecute} 
               onClick={()=>{execute({
                 params: [
-                  step
+                  step-1
                 ],
               })}}
             >

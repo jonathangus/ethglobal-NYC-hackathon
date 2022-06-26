@@ -40,8 +40,6 @@ describe('Roadmap', function () {
     });
 
     it('should be reclaimable', async () => {
-      const test = await nftContract.ancillaryData();
-      console.log(':::::', test);
       const mintPrice = await nftContract.MINT_PRICE();
       await nftContract.mint(owner.address, 9, { value: mintPrice.mul(9) });
       const balance = await nftContract.balanceOf(owner.address);

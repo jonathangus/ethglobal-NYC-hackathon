@@ -91,7 +91,7 @@ const AddressExpanded = () => {
           </Container>
         </Card.Header>
         <Card.Body>
-          <Roadmap stepsCompleted={stepsCompleted.toNumber()}></Roadmap>
+          <Roadmap stepsCompleted={stepsCompleted?.toNumber()}></Roadmap>
         </Card.Body>
         <Card.Footer>
           <Row justify="space-between">

@@ -5,13 +5,18 @@ import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
 import './SafeLaunch.sol';
+import './GovernanceOracle.sol';
 
-// import './GovernanceOracle.sol';
-
-contract MyNFT is ERC721, ERC721Enumerable, Ownable, SafeLaunch {
-    uint256 private constant RESERVED_TREASURY_AMOUNT = 0.01 ether;
+contract MyNFT is
+    ERC721,
+    ERC721Enumerable,
+    Ownable,
+    SafeLaunch,
+    GovernanceOracle
+{
+    uint256 public constant RESERVED_TREASURY_AMOUNT = 0.01 ether;
     uint256 public constant MINT_PRICE = 0.001 ether;
-    uint256 private constant MAX_SUPPLY = 100;
+    uint256 public constant MAX_SUPPLY = 100;
 
     bool private apeSent = false;
     bool private charitySent = false;
@@ -35,7 +40,7 @@ contract MyNFT is ERC721, ERC721Enumerable, Ownable, SafeLaunch {
     }
 
     function governanceIsApproved() public view returns (bool) {
-        return true;
+        return governanceApproved;
     }
 
     function apeIsSent() public view returns (bool) {
@@ -50,8 +55,8 @@ contract MyNFT is ERC721, ERC721Enumerable, Ownable, SafeLaunch {
 
     function sendToCharity() public onlyOwner {
         // Send eth to our fantastic charity that we promised
-        address CHARITY_ADDRESS = 0x9AA48Bb538206d5D7329aafd17B63562e7c98457;
-        payable(CHARITY_ADDRESS).transfer(0.1 ether);
+        // address CHARITY_ADDRESS = 0x9AA48Bb538206d5D7329aafd17B63562e7c98457;
+        // payable(CHARITY_ADDRESS).transfer(0.1 ether);
         charitySent = true;
     }
 

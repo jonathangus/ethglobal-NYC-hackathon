@@ -147,7 +147,9 @@ const AddressExpanded = () => {
           <Row justify="space-between">
             {!complete && (
               <Button
-                disabled={contractOwner !== connectedAddress}
+                disabled={
+                  contractOwner !== connectedAddress || isContractReverted
+                }
                 onClick={() => abortProject()}
               >
                 Abandon
@@ -179,7 +181,7 @@ const AddressExpanded = () => {
                     claimNfts({
                       params: [
                         accountAssets.ownedNfts.map((aa) =>
-                          ethers.BigNumber.from(aa.id.tokenId).toNumber()
+                          ethers.BigNumber.from(aa.id.tokenId)
                         ),
                       ],
                     });

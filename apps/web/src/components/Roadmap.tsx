@@ -65,7 +65,7 @@ function Roadmap({ stepsCompleted }) {
             title={task.title}
             description={task.description}
             func={task.func}
-            step={index + 1}
+            step={task.id}
             isDone={stepsCompleted > index}
             isActive={stepsCompleted === index}
             isLast={index + 1 >= tasks.length}

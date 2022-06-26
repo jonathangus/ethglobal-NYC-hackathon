@@ -116,9 +116,9 @@ contract SafeLaunch is Ownable {
         IERC721 nft = IERC721(address(this));
 
         for (uint256 i = 0; i < tokenIds.length; i++) {
-            require(nft.ownerOf(i) == msg.sender, 'Wrong owner');
-            require(!claimed[i], 'Already claimed for token');
-            claimed[i] = true;
+            require(nft.ownerOf(tokenIds[i]) == msg.sender, 'Wrong owner');
+            require(!claimed[tokenIds[i]], 'Already claimed for token');
+            claimed[tokenIds[i]] = true;
             nft.transferFrom(msg.sender, address(this), tokenIds[i]);
         }
         uint256 refund = claimableAmount(tokenIds);

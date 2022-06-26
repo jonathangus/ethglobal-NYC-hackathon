@@ -35,6 +35,8 @@ function Task({ step, title, description, isActive, isDone, isLast, func }) {
             size="xs"
             disabled={!canExecute}
             onClick={() => {
+              console.log(step);
+
               execute({
                 params: [step],
               });

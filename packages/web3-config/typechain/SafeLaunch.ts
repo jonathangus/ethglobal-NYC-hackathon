@@ -17,8 +17,8 @@ import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface RoadmapInterface extends utils.Interface {
-  contractName: "Roadmap";
+export interface SafeLaunchInterface extends utils.Interface {
+  contractName: "SafeLaunch";
   functions: {
     "abort()": FunctionFragment;
     "claimRefund(uint256[])": FunctionFragment;
@@ -132,13 +132,13 @@ export type StepExecutedEvent = TypedEvent<[BigNumber], { stepId: BigNumber }>;
 
 export type StepExecutedEventFilter = TypedEventFilter<StepExecutedEvent>;
 
-export interface Roadmap extends BaseContract {
-  contractName: "Roadmap";
+export interface SafeLaunch extends BaseContract {
+  contractName: "SafeLaunch";
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: RoadmapInterface;
+  interface: SafeLaunchInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,

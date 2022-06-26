@@ -21,9 +21,6 @@ const Page = () => {
 
   return (
     <Container fluid css={{ height: '100%' }}>
-      <Row align="flex-end" justify="flex-end">
-        <ConnectButton />
-      </Row>
       <Container
         display="flex"
         wrap="nowrap"
@@ -44,7 +41,11 @@ const Page = () => {
           />
         </Row>
         <Row>
-          <Button color="primary" css={{ margin: '8px auto'}} onClick={handleAddressLookup}>
+          <Button
+            color="primary"
+            css={{ margin: '8px auto' }}
+            onClick={handleAddressLookup}
+          >
             Look up
           </Button>
         </Row>

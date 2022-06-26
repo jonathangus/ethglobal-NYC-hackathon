@@ -1,5 +1,13 @@
 import { useRouter } from 'next/router';
-import { Container, Row, Col, Card, Text, Button } from '@nextui-org/react';
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Text,
+  Button,
+  Image,
+} from '@nextui-org/react';
 import useAxios from 'axios-hooks';
 import { useProvider, useAccount, useContractRead } from 'wagmi';
 import { ethers } from 'ethers';
@@ -25,11 +33,17 @@ const AddressExpanded = () => {
     MyNFT__factory,
     'reverted'
   );
+  const { data: totalSupply = ethers.BigNumber.from(0) } = useReadContract(
+    MyNFT__factory,
+    'totalSupply'
+  );
   const { data: isApprovedForAll } = useReadContract(
     MyNFT__factory,
     'isApprovedForAll',
     { params: [connectedAddress, contractAddress] }
   );
+
+  console.log({ totalSupply });
 
   const [{ data: accountAssets = {}, loading }, getAccountAssets] = useAxios(
     {
@@ -65,6 +79,8 @@ const AddressExpanded = () => {
     return <div>Loading...</div>;
   }
 
+  const doesAddressOwnNfts = accountAssets?.totalCount > 1;
+
   return (
     <Container
       fluid
@@ -76,8 +92,13 @@ const AddressExpanded = () => {
         justifyContent: 'center',
       }}
     >
-      <Card css={{ mw: '720px', mh: '500px' }}>
+      <Card css={{ mw: '780px', mh: '700px' }}>
         <Card.Header>
+          <Image
+            alt="nyc"
+            css={{ height: '100px' }}
+            src="https://images.unsplash.com/photo-1546436836-07a91091f160?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2974&q=80"
+          />
           <Container
             display="flex"
             direction="column"
@@ -89,6 +110,8 @@ const AddressExpanded = () => {
             </Col>
             <Col style={{ textAlign: 'right' }}>
               <Text h4>Balance: {contractBalance} ETH</Text>
+              <Text h4>Total supply: {totalSupply.toNumber()}</Text>
+              <Text h4>You own: {accountAssets.ownedNfts?.length}</Text>
             </Col>
           </Container>
         </Card.Header>
@@ -104,7 +127,7 @@ const AddressExpanded = () => {
               Abandon
             </Button>
             <Button
-              disabled={accountAssets?.totalCount < 1 || !isContractReverted}
+              disabled={!doesAddressOwnNfts || !isContractReverted}
               onClick={() => {
                 if (!isApprovedForAll) {
                   approveNfts({ params: [contractAddress, true] });

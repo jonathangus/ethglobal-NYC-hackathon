@@ -1,6 +1,7 @@
 import { Row, Switch, Text, useTheme } from '@nextui-org/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useTheme as useNextTheme } from 'next-themes';
+import Link from 'next/link';
 
 export const Header = () => {
   const { setTheme } = useNextTheme();
@@ -12,16 +13,19 @@ export const Header = () => {
       justify="space-between"
       css={{ padding: '24px 24px 48px 24px' }}
     >
-      <Text
-        h1
-        size={24}
-        css={{
-          textGradient: "45deg, $blue600 -20%, $pink600 50%",
-        }}
-        weight="bold"
-      >
-        Safe Launch
-      </Text>
+      <Link href="/" passHref>
+        <Text
+          h1
+          size={24}
+          css={{
+            textGradient: "45deg, $blue600 -20%, $pink600 50%",
+            cursor: 'pointer'
+          }}
+          weight="bold"
+        >
+          Safe Launch
+        </Text>
+      </Link>
       <div style={{display:'flex'}}>
         <div style={{ display: 'flex', alignItems: 'center', marginRight: '24px'}}>
           <span style={{ marginRight: 8, fontSize: 24 }}>

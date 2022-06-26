@@ -8,10 +8,7 @@ const useAddress = (contract: string | any): string => {
   const contractName =
     typeof contract === 'string' ? contract : new contract().contractName;
 
-  return getAddress(
-    isSupported && currentChainId ? currentChainId : config.defaultChain,
-    contractName as AvailableContracts
-  );
+  return getAddress(config.defaultChain, contractName as AvailableContracts);
 };
 
 export default useAddress;

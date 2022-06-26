@@ -11,17 +11,17 @@ export let defaultChain = Chains.KOVAN;
 
 const INFURA_ID = process.env.NEXT_PUBLIC_INFURA_ID;
 
-if (process.env.NEXT_PUBLIC_WANTED_CHAIN) {
-  if (Chains[parseInt(process.env.NEXT_PUBLIC_WANTED_CHAIN)]) {
-    defaultChain = parseInt(process.env.NEXT_PUBLIC_WANTED_CHAIN);
+// if (process.env.NEXT_PUBLIC_WANTED_CHAIN) {
+//   if (Chains[parseInt(process.env.NEXT_PUBLIC_WANTED_CHAIN)]) {
+//     defaultChain = parseInt(process.env.NEXT_PUBLIC_WANTED_CHAIN);
 
-    if (!INFURA_ID) {
-      throw new Error(
-        'Require NEXT_PUBLIC_INFURA_ID if you use another chain then localhost'
-      );
-    }
-  }
-}
+//     if (!INFURA_ID) {
+//       throw new Error(
+//         'Require NEXT_PUBLIC_INFURA_ID if you use another chain then localhost'
+//       );
+//     }
+//   }
+// }
 
 export const wantedChains = [chain.kovan];
 

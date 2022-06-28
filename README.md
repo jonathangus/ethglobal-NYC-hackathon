@@ -2,7 +2,8 @@
 
 Extend your ERC-721 smart contract with an on-chain roadmap and invite your minters to governance. No more empty promises and rugg pulls a win win for everyone!
 
-
+Video demo:
+https://vimeo.com/724497629
 ## Problem Statement:
 
 The NFT minting process today is built on trust. 
